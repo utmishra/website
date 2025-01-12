@@ -1,6 +1,14 @@
 import type { Metadata } from 'next'
 import '@radix-ui/themes/styles.css'
+import './globals.css'
 import { Theme } from '@radix-ui/themes'
+import { Cormorant } from 'next/font/google'
+
+const cormorant = Cormorant({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-cormorant',
+})
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -13,9 +21,18 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={cormorant.variable}>
       <body>
-        <Theme>{children}</Theme>
+        <Theme
+          accentColor="blue"
+          grayColor="gray"
+          panelBackground="solid"
+          scaling="100%"
+          radius="full"
+          appearance="light"
+        >
+          {children}
+        </Theme>
       </body>
     </html>
   )

@@ -1,0 +1,13 @@
+{
+  "folders": [
+    {
+      "path": "web"
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "eslint.codeActionsOnSave.rules": null,
+    "eslint.format.enable": true,
+    "prettier.configPath": ".prettierrc"
+  }
+}
