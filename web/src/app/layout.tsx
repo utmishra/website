@@ -3,6 +3,7 @@ import '@radix-ui/themes/styles.css'
 import './globals.css'
 import { Theme } from '@radix-ui/themes'
 import { Cormorant } from 'next/font/google'
+import Image from 'next/image'
 
 const cormorant = Cormorant({
   subsets: ['latin'],
@@ -31,6 +32,19 @@ export default function RootLayout({
           radius="full"
           appearance="light"
         >
+          <Image
+            src="/background.svg"
+            alt="page_background"
+            width="1530"
+            height="994"
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: -5,
+              margin: '-10px',
+              padding: '-20px',
+            }}
+          ></Image>
           {children}
         </Theme>
       </body>
