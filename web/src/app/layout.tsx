@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import '@radix-ui/themes/styles.css'
 import './globals.css'
 import { Theme } from '@radix-ui/themes'
+import { ThemeProvider } from 'next-themes'
 import { Cormorant } from 'next/font/google'
-import Image from 'next/image'
 
 const cormorant = Cormorant({
   subsets: ['latin'],
@@ -24,29 +24,17 @@ export default function RootLayout({
   return (
     <html lang="en" className={cormorant.variable}>
       <body>
-        <Theme
-          accentColor="blue"
-          grayColor="gray"
-          panelBackground="solid"
-          scaling="100%"
-          radius="full"
-          appearance="light"
-        >
-          <Image
-            src="/background.svg"
-            alt="page_background"
-            width="1530"
-            height="994"
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: -5,
-              margin: '-10px',
-              padding: '-20px',
-            }}
-          ></Image>
-          {children}
-        </Theme>
+        <ThemeProvider attribute="class" enableSystem>
+          <Theme
+            accentColor="blue"
+            grayColor="gray"
+            scaling="100%"
+            radius="full"
+            appearance="inherit"
+          >
+            <main>{children}</main>
+          </Theme>
+        </ThemeProvider>
       </body>
     </html>
   )

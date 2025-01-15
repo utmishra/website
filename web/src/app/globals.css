@@ -31,6 +31,9 @@
   --blue-surface: #f0f8ffcc;
   --blue-indicator: #005e92;
   --blue-track: #005e92;
+
+  background: rgb(255, 255, 255);
+  background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(224, 242, 255, 1) 61%, rgba(215, 232, 245, 1) 100%);
 }
 
 @supports (color: color(display-p3 1 1 1)) {
@@ -105,6 +108,9 @@
   --blue-surface: #08233980;
   --blue-indicator: #005e92;
   --blue-track: #005e92;
+
+  background: rgb(255, 255, 255);
+  background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(224, 242, 255, 1) 61%, rgba(215, 232, 245, 1) 100%);
 }
 
 @supports (color: color(display-p3 1 1 1)) {
@@ -146,6 +152,22 @@
   }
 }
 
+body {
+  margin: 0;
+}
+
 .radix-themes {
   --default-font-family: var(--font-cormorant);
+}
+
+.light .radix-themes,
+.light-theme .radix-themes {
+  background: rgb(255, 255, 255);
+  background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(224, 242, 255, 1) 61%, rgba(215, 232, 245, 1) 100%);
+}
+
+.dark .radix-themes,
+.dark-theme .radix-themes {
+  background: rgb(104, 164, 208);
+  background: radial-gradient(circle, rgba(104, 164, 208, 1) 0%, rgba(37, 81, 112, 1) 16%, rgba(28, 62, 87, 1) 59%);
 }

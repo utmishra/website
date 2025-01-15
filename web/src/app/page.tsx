@@ -7,13 +7,22 @@ import { Flex, Card } from '@radix-ui/themes'
 export default function Home() {
   return (
     <Flex
-      height="750px"
       align="center"
       direction="column"
       justify="center"
       gap="2"
+      width="100vw"
+      height="100vh"
+      p="2"
     >
-      <Card size="4">
+      <Card
+        size={{
+          xl: '5',
+          md: '4',
+          sm: '3',
+          xs: '1',
+        }}
+      >
         <Head />
         <Search />
         <Links />
