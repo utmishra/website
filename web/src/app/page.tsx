@@ -1,6 +1,7 @@
 import Head from '@components/ui/homepage/head'
 import Links from '@components/ui/homepage/links'
 import Search from '@components/ui/homepage/search'
+import { Social } from '@components/ui/homepage/social'
 import { ThemeSwitcher } from '@components/ui/homepage/theme-switcher'
 
 import { Flex, Card } from '@radix-ui/themes'
