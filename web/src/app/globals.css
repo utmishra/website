@@ -32,6 +32,9 @@
   --blue-indicator: #005e92;
   --blue-track: #005e92;
 
+  --theme-toggle-sun-icon-display: none;
+  --theme-toggle-moon-icon-display: block;
+
   background: rgb(255, 255, 255);
   background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(224, 242, 255, 1) 61%, rgba(215, 232, 245, 1) 100%);
 }
@@ -109,6 +112,9 @@
   --blue-indicator: #005e92;
   --blue-track: #005e92;
 
+  --theme-toggle-sun-icon-display: block;
+  --theme-toggle-moon-icon-display: none;
+
   background: rgb(255, 255, 255);
   background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(224, 242, 255, 1) 61%, rgba(215, 232, 245, 1) 100%);
 }
@@ -160,14 +166,14 @@ body {
   --default-font-family: var(--font-cormorant);
 }
 
-.light .radix-themes,
-.light-theme .radix-themes {
+.light main,
+.light-theme main {
   background: rgb(255, 255, 255);
   background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(224, 242, 255, 1) 61%, rgba(215, 232, 245, 1) 100%);
 }
 
-.dark .radix-themes,
-.dark-theme .radix-themes {
+.dark main,
+.dark-theme main {
   background: rgb(104, 164, 208);
-  background: radial-gradient(circle, rgba(104, 164, 208, 1) 0%, rgba(37, 81, 112, 1) 16%, rgba(28, 62, 87, 1) 59%);
+  background: radial-gradient(circle, rgb(50, 96, 129) 0%, rgba(37, 81, 112, 1) 16%, rgba(28, 62, 87, 1) 59%);
 }
