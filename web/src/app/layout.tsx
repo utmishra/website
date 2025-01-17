@@ -1,19 +1,10 @@
 import type { Metadata } from 'next'
 import '@radix-ui/themes/styles.css'
 import './globals.css'
-import { Theme } from '@radix-ui/themes'
+import { Flex, Theme } from '@radix-ui/themes'
 import { ThemeProvider } from 'next-themes'
-import { Cormorant, Noto_Serif, Noto_Sans_Mono } from 'next/font/google'
-
-const cormorant = Cormorant({
-  subsets: ['latin'],
-  display: 'swap',
-})
-
-const notoSerif = Noto_Serif({
-  subsets: ['latin'],
-  display: 'swap',
-})
+import { Noto_Sans_Mono } from 'next/font/google'
+import { ThemeSwitcher } from '@components/ui/homepage/theme-switcher'
 
 const notoSansMono = Noto_Sans_Mono({
   subsets: ['latin'],
@@ -41,7 +32,12 @@ export default function RootLayout({
             radius="full"
             appearance="inherit"
           >
-            <main>{children}</main>
+            <main>
+              <Flex direction="row-reverse" p="4">
+                <ThemeSwitcher />
+              </Flex>
+              {children}
+            </main>
           </Theme>
         </ThemeProvider>
       </body>
