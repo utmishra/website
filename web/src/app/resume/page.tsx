@@ -1,36 +1,12 @@
 import IdCard from '@components/ui/homepage/id-card'
 import Block from '@components/ui/resume/block'
 import Dropdown from '@components/ui/resume/categories'
-import Experience, {
-  type ExperienceProps,
-} from '@components/ui/resume/experience'
+import Experience from '@components/ui/resume/experience'
 import { generateId } from '@components/utils/component'
-import { Box, Flex, Grid } from '@radix-ui/themes'
-
-const experiences: ExperienceProps[] = [
-  {
-    title: 'Cloud Engineer',
-    company: {
-      logo: 'sunflower.png',
-      name: 'Sunflower Labs',
-      url: 'https://sunflower-labs.com/',
-    },
-    start: {
-      month: 'September',
-      year: '2024',
-    },
-    end: {
-      month: 'December',
-      year: '2024',
-    },
-    location: 'Zurich, Switzerland',
-    description: [
-      'Improved user authentication user flow by handling vulnerabilities and edge cases',
-      'Implemented monitoring for sockets, endpoints & requests in the Hive (docking station) middleware',
-      'Designated Release Testing Engineer for the October release, ensuring successful end-to-end feature & regression tests',
-    ],
-  },
-]
+import { Badge, Box, Flex, Grid } from '@radix-ui/themes'
+import { experiences } from '@components/data/experiences'
+import { skills } from '@components/data/skills'
+import Skill from '@components/ui/resume/skill'
 
 export default function Resume() {
   return (
@@ -47,12 +23,33 @@ export default function Resume() {
         <Box p="20px">
           <Dropdown />
         </Box>
-        <Box p="20px">
-          {experiences.map((experience) => (
-            <Block key={generateId(experience.title)} title="Experience">
-              <Experience {...experience} />
+        <Box>
+          <Box ml="4" mb="2">
+            <Badge size="3">Skills</Badge>
+          </Box>
+          <Box>
+            <Block title="Skills">
+              <Grid columns="2" gap="2">
+                {skills.map((skill) => (
+                  <Skill
+                    key={generateId(skill.name)}
+                    name={skill.name}
+                    value={skill.rating * 20}
+                  />
+                ))}
+              </Grid>
             </Block>
-          ))}
+          </Box>
+          <Box ml="4" mb="2">
+            <Badge size="3">Experience</Badge>
+          </Box>
+          <Box>
+            {experiences.map((experience) => (
+              <Block key={generateId(experience.title)} title="Experience">
+                <Experience {...experience} />
+              </Block>
+            ))}
+          </Box>
         </Box>
       </Grid>
     </Flex>

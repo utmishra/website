@@ -1,5 +1,13 @@
 import { generateId } from '@components/utils/component'
-import { Container, Box, Strong, Separator, Text, Flex } from '@radix-ui/themes'
+import {
+  Container,
+  Box,
+  Strong,
+  Separator,
+  Text,
+  Flex,
+  Link,
+} from '@radix-ui/themes'
 import Image from 'next/image'
 
 export type ExperienceProps = {
@@ -34,7 +42,7 @@ export default function Experience(props: ExperienceProps) {
           alt={props.company.name}
           style={{ marginTop: '5px' }}
         />
-        <Text>{props.company.name}</Text>
+        <Link href={props.company.url}>{props.company.name}</Link>
         <Separator size="2" orientation="vertical" />
         <Text>{props.location}</Text>
         <Separator size="2" orientation="vertical" />

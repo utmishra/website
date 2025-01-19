@@ -1,0 +1,31 @@
+export const skills = [
+  { name: 'Typescript', rating: 4 },
+  { name: 'Javascript', rating: 4 },
+  { name: 'Node.js', rating: 4 },
+  { name: 'React', rating: 3 },
+  { name: 'Next.js', rating: 3 },
+  { name: 'Nest.js', rating: 3 },
+  { name: 'SQL (MySQL/PostgreSQL)', rating: 4 },
+  { name: 'NoSQL', rating: 4 },
+  { name: 'REST', rating: 5 },
+  { name: 'GraphQL', rating: 3 },
+  { name: 'Cypress', rating: 3 },
+  { name: 'Vitest', rating: 4 },
+  { name: 'Docker', rating: 3 },
+  { name: 'Kubernetes', rating: 3 },
+]
+
+export const methodologies = [
+  'Object Oriented Programming',
+  'Functional Programming',
+  'Event Driven Programming',
+  'System & API Design',
+  'ACID',
+  'Caching',
+  'Microservices',
+  'SOLID',
+  'Clean Code',
+  'Code Reviews',
+  'Test Driven Development',
+  'Agile Methodology',
+]
