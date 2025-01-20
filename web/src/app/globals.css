@@ -188,10 +188,27 @@ main {
 .light-theme main {
   background: rgb(255, 255, 255);
   background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(224, 242, 255, 1) 61%, rgba(215, 232, 245, 1) 100%);
+
+  button a:visited span {
+    color: var(--gray-1);
+  }
 }
 
 .dark main,
 .dark-theme main {
   background: rgb(104, 164, 208);
   background: radial-gradient(circle, rgb(50, 96, 129) 0%, rgba(37, 81, 112, 1) 16%, rgba(28, 62, 87, 1) 59%);
+
+  button a:visited span {
+    color: var(--gray-12);
+  }
+}
+
+#categories ul {
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  text-decoration-color: var(--gray-12);
 }

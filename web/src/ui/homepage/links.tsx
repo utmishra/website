@@ -8,11 +8,11 @@ export default function Links() {
         <Button size="4" radius="medium">
           <Text weight="bold">Search</Text>
         </Button>
-        <Button size="4" radius="medium">
-          <Link href="/resume">
+        <Link href="/resume">
+          <Button size="4" radius="medium">
             <Text weight="bold">Resume</Text>
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </Flex>
     </Section>
   )

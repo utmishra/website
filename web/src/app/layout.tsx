@@ -4,7 +4,7 @@ import './globals.css'
 import { Flex, Theme } from '@radix-ui/themes'
 import { ThemeProvider } from 'next-themes'
 import { Noto_Sans_Mono } from 'next/font/google'
-import { ThemeSwitcher } from '@components/ui/homepage/theme-switcher'
+import { Header } from '@components/ui/homepage/header'
 
 const notoSansMono = Noto_Sans_Mono({
   subsets: ['latin'],
@@ -33,9 +33,8 @@ export default function RootLayout({
             appearance="inherit"
           >
             <main>
-              <Flex direction="row-reverse" p="4">
-                <ThemeSwitcher />
-              </Flex>
+              <Header />
+
               {children}
             </main>
           </Theme>

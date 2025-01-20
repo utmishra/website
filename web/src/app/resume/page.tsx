@@ -7,6 +7,7 @@ import { Badge, Box, Flex, Grid } from '@radix-ui/themes'
 import { experiences } from '@components/data/experiences'
 import { skills } from '@components/data/skills'
 import Skill from '@components/ui/resume/skill'
+import { AboutMe } from '@components/data/about-me'
 
 export default function Resume() {
   return (
@@ -28,6 +29,9 @@ export default function Resume() {
             <Badge size="3">Skills</Badge>
           </Box>
           <Box>
+            <Block title="About Me">
+              <AboutMe />
+            </Block>
             <Block title="Skills">
               <Grid columns="2" gap="2">
                 {skills.map((skill) => (
