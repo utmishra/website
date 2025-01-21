@@ -32,7 +32,14 @@ export type ExperienceProps = {
 export default function Experience(props: ExperienceProps) {
   return (
     <Container>
-      <Flex direction="row" gap="2">
+      <Flex
+        direction={{
+          xl: 'row',
+          md: 'row',
+          initial: 'column',
+        }}
+        gap="2"
+      >
         <Strong>{props.title}</Strong>
         <Separator size="2" orientation="vertical" />
         <Image

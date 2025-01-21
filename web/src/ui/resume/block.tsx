@@ -1,21 +1,32 @@
-import { Container, Box } from '@radix-ui/themes'
+import { Container, Box, Badge } from '@radix-ui/themes'
+import { ReactNode } from 'react'
 
 type BlockProps = {
+  readonly id: string
   readonly title: string
-  readonly children?: React.ReactNode
+  readonly children: ReactNode
 }
 
-export default function Block({ children }: BlockProps) {
+export default function Block({ id, title, children }: BlockProps) {
   return (
     <Container
-      style={{
-        border: '1px solid #dddddd',
-        borderRadius: '15px',
-      }}
-      p="2"
-      m="2"
+      id={id}
+      align={{ initial: 'center', sm: 'left', xs: 'left' }}
+      style={{ width: '100%' }}
     >
-      <Box mt="2">{children}</Box>
+      <Badge size="3" m="2">
+        {title}
+      </Badge>
+      <Container
+        style={{
+          border: '1px solid #dddddd',
+          borderRadius: '15px',
+        }}
+        p="2"
+        m="2"
+      >
+        <Box mt="2">{children}</Box>
+      </Container>
     </Container>
   )
 }

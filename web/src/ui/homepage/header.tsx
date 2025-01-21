@@ -11,7 +11,7 @@ export const Header = () => {
   return (
     <Flex
       direction="row"
-      p="4"
+      p="20px"
       width="100%"
       style={{ justifyContent: 'space-between' }}
     >

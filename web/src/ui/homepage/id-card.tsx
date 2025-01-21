@@ -18,6 +18,13 @@ export default function IdCard() {
         xs: 'center',
         initial: 'center',
       }}
+      justify={{
+        xl: 'start',
+        md: 'center',
+        sm: 'center',
+        xs: 'center',
+        initial: 'center',
+      }}
       gap={{
         xl: '4',
         md: '2',
@@ -31,7 +38,13 @@ export default function IdCard() {
       </Box>
       <Flex
         direction="column"
-        align="center"
+        align={{
+          xl: 'start',
+          md: 'start',
+          sm: 'center',
+          xs: 'center',
+          initial: 'center',
+        }}
         justify={{
           xl: 'start',
           md: 'start',

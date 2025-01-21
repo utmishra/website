@@ -5,7 +5,7 @@ export const skills = [
   { name: 'React', rating: 3 },
   { name: 'Next.js', rating: 3 },
   { name: 'Nest.js', rating: 3 },
-  { name: 'SQL (MySQL/PostgreSQL)', rating: 4 },
+  { name: 'SQL', rating: 4 },
   { name: 'NoSQL', rating: 4 },
   { name: 'REST', rating: 5 },
   { name: 'GraphQL', rating: 3 },

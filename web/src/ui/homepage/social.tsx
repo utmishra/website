@@ -36,7 +36,20 @@ const socialData: {
 
 export function Social() {
   return (
-    <Flex direction="row" align="start" justify="start" gap="4" mt="2" mb="2">
+    <Flex
+      direction="row"
+      align={{
+        xl: 'start',
+        md: 'start',
+        sm: 'center',
+        xs: 'center',
+        initial: 'center',
+      }}
+      justify="start"
+      gap="4"
+      mt="2"
+      mb="2"
+    >
       {socialData.map((data) => (
         <Link key={data.id} href={data.url} target="_blank">
           <IconButton size="2" variant="surface">
