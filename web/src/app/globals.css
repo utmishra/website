@@ -225,10 +225,18 @@ a {
   .radix-themes .rt-Separator.sm-hidden {
     display: none;
   }
+
+  .id-card {
+    padding-top: 0;
+  }
 }
 
 @media (max-width: 575px) {
   .radix-themes .rt-Separator.xs-hidden {
     display: none;
+  }
+
+  .id-card {
+    padding-top: 0;
   }
 }

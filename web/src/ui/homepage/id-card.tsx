@@ -32,6 +32,7 @@ export default function IdCard() {
         xs: '0',
         initial: '0',
       }}
+      className="id-card"
     >
       <Box as="div" p="4">
         <Avatar src="/utmishra.jpeg" size="9" radius="full" fallback={''} />
