@@ -25,7 +25,9 @@ export default function Block({ id, title, children }: BlockProps) {
         p="2"
         m="2"
       >
-        <Box mt="2">{children}</Box>
+        <Box mt="2" mb="2">
+          {children}
+        </Box>
       </Container>
     </Container>
   )

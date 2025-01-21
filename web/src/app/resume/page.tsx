@@ -9,6 +9,8 @@ import { skills } from '@components/data/skills'
 import Skill from '@components/ui/resume/skill'
 import { AboutMe } from '@components/data/about-me'
 import { responsiveWidth } from '@components/ui/common/styles'
+import Certifications from '@components/ui/resume/certifications'
+import Education from '@components/ui/resume/education'
 
 export default function Resume() {
   return (
@@ -104,6 +106,12 @@ export default function Resume() {
             {experiences.map((experience) => (
               <Experience key={generateId(experience.title)} {...experience} />
             ))}
+          </Block>
+          <Block id="certifications" title="Certifications">
+            <Certifications />
+          </Block>
+          <Block id="education" title="Education">
+            <Education />
           </Block>
         </Flex>
       </Section>

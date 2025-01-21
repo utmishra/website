@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import '@radix-ui/themes/styles.css'
 import './globals.css'
-import { Flex, Theme } from '@radix-ui/themes'
+import { Theme } from '@radix-ui/themes'
 import { ThemeProvider } from 'next-themes'
 import { Noto_Sans_Mono } from 'next/font/google'
 import { Header } from '@components/ui/homepage/header'

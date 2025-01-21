@@ -10,7 +10,7 @@ export default function Links() {
         </Button> */}
         <Link href="/resume">
           <Button size="4" radius="medium">
-            <Text weight="bold">Resume</Text>
+            <Text weight="bold">View Resume</Text>
           </Button>
         </Link>
       </Flex>

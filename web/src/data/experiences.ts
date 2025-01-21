@@ -24,7 +24,7 @@ export const experiences = [
   {
     title: 'Senior Full Stack Developer',
     company: {
-      logo: 'frontify.svg',
+      logo: 'frontify.jpeg',
       name: 'Frontify',
       url: 'https://frontify.com/',
     },

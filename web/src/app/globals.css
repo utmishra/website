@@ -192,6 +192,10 @@ main {
   button a:visited span {
     color: var(--gray-1);
   }
+
+  .consistentColor {
+    color: var(--blue-12);
+  }
 }
 
 .dark main,
@@ -200,6 +204,10 @@ main {
   background: radial-gradient(circle, rgb(50, 96, 129) 0%, rgba(37, 81, 112, 1) 16%, rgba(28, 62, 87, 1) 59%);
 
   button a:visited span {
+    color: var(--gray-12);
+  }
+
+  .consistentColor {
     color: var(--gray-12);
   }
 }
