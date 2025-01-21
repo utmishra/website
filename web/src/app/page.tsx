@@ -1,6 +1,5 @@
 import IdCard from '@components/ui/homepage/id-card'
 import Links from '@components/ui/homepage/links'
-import Search from '@components/ui/homepage/search'
 
 import { Flex, Card } from '@radix-ui/themes'
 

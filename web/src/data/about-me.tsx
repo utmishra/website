@@ -3,8 +3,8 @@ import Link from 'next/link'
 export const AboutMe = () => (
   <section>
     <p>
-      👋 Hi there! I'm <strong>Utkarsh Mishra</strong>, a computer nerd and a
-      Senior Full Stack Developer 🌐. I started programming in 2005 on a{' '}
+      👋 Hi there! I&apos;m <strong>Utkarsh Mishra</strong>, a computer nerd and
+      a Senior Full Stack Developer 🌐. I started programming in 2005 on a{' '}
       <Link
         href="https://www.reddit.com/r/retrobattlestations/comments/r41pp9/portable_week_vtech_pre_computer_power_pad_from/"
         target="_blank"
