@@ -212,3 +212,15 @@ main {
 a {
   text-decoration-color: var(--gray-12);
 }
+
+@media (min-width: 576px) and (max-width: 767px) {
+  .radix-themes .rt-Separator.sm-hidden {
+    display: none;
+  }
+}
+
+@media (max-width: 575px) {
+  .radix-themes .rt-Separator.xs-hidden {
+    display: none;
+  }
+}

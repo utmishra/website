@@ -3,12 +3,14 @@ import {
   Container,
   Box,
   Strong,
-  Separator,
   Text,
   Flex,
   Link,
+  Section,
+  Separator,
 } from '@radix-ui/themes'
 import Image from 'next/image'
+import { ResponsiveSeparator } from '../common/responsive-separator'
 
 export type ExperienceProps = {
   readonly title: string
@@ -41,24 +43,27 @@ export default function Experience(props: ExperienceProps) {
         gap="2"
       >
         <Strong>{props.title}</Strong>
-        <Separator size="2" orientation="vertical" />
-        <Image
-          width={15}
-          height={15}
-          src={`/${props.company.logo}`}
-          alt={props.company.name}
-          style={{ marginTop: '5px' }}
-        />
-        <Link href={props.company.url}>{props.company.name}</Link>
-        <Separator size="2" orientation="vertical" />
+        <ResponsiveSeparator />
+        <Section p="0" m="0">
+          <Image
+            width={15}
+            height={15}
+            src={`/${props.company.logo}`}
+            alt={props.company.name}
+            style={{ marginTop: '5px', marginRight: '5px' }}
+          />
+          <Link href={props.company.url}>{props.company.name}</Link>
+        </Section>
+
+        <ResponsiveSeparator />
         <Text>{props.location}</Text>
-        <Separator size="2" orientation="vertical" />
+        <ResponsiveSeparator />
         <Text>
           {props.start.month} {props.start.year} - {props.end.month}{' '}
           {props.end.year}
         </Text>
       </Flex>
-      <Separator size="4" />
+      <Separator size="4" orientation="horizontal" />
       <Box>
         <ul>
           {props.description.map((item) => (

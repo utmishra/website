@@ -25,7 +25,7 @@ export default function Home() {
         }}
       >
         <IdCard />
-        <Search />
+        {/* <Search /> */}
         <Links />
       </Card>
     </Flex>
