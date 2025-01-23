@@ -42,6 +42,7 @@ export default function IdCard() {
           width="160"
           height="160"
           style={{ borderRadius: '50%' }}
+          priority
         />
       </Box>
       <Flex
