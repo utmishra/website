@@ -9,7 +9,7 @@ export default function Links() {
           <Text weight="bold">Search</Text>
         </Button> */}
         <Link href="/resume">
-          <Button size="4" radius="medium">
+          <Button size="4" radius="medium" aria-label="View Resume">
             <Text weight="bold">View Resume</Text>
           </Button>
         </Link>

@@ -51,8 +51,17 @@ export function Social() {
       mb="2"
     >
       {socialData.map((data) => (
-        <Link key={data.id} href={data.url} target="_blank">
-          <IconButton size="2" variant="surface">
+        <Link
+          key={data.id}
+          href={data.url}
+          target="_blank"
+          aria-label={`External link to ${data.name} profile`}
+        >
+          <IconButton
+            size="2"
+            variant="surface"
+            aria-label={`${data.name} button`}
+          >
             <data.icon />
           </IconButton>
         </Link>

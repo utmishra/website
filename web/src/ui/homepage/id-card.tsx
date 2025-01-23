@@ -1,5 +1,6 @@
-import { Heading, Flex, Avatar, Text, Box } from '@radix-ui/themes'
+import { Heading, Flex, Text, Box } from '@radix-ui/themes'
 import { Social } from './social'
+import Image from 'next/image'
 
 export default function IdCard() {
   return (
@@ -35,7 +36,13 @@ export default function IdCard() {
       className="id-card"
     >
       <Box as="div" p="4">
-        <Avatar src="/utmishra.jpeg" size="9" radius="full" fallback={''} />
+        <Image
+          src="/utmishra.webp"
+          alt="Utkarsh Mishra's avatar"
+          width="160"
+          height="160"
+          style={{ borderRadius: '50%' }}
+        />
       </Box>
       <Flex
         direction="column"

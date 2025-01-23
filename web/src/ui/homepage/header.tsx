@@ -17,7 +17,7 @@ export const Header = () => {
     >
       <Link href="/">
         <IconButton
-          size="3"
+          size="4"
           variant="ghost"
           color="gray"
           aria-label="Home page"
@@ -31,7 +31,7 @@ export const Header = () => {
         content="Toggle theme"
       >
         <IconButton
-          size="3"
+          size="4"
           variant="ghost"
           color="gray"
           aria-label="Toggle theme"
