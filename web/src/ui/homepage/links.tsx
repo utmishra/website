@@ -10,7 +10,17 @@ export default function Links() {
         </Button> */}
         <Link href="/resume">
           <Button size="4" radius="medium" aria-label="View Resume">
-            <Text weight="bold">View Resume</Text>
+            <Text weight="bold">About Me</Text>
+          </Button>
+        </Link>
+        <Link
+          href="https://rdkwr3shxcvpilqn.public.blob.vercel-storage.com/documents/Utkarsh%20Mishra%20-%20Senior%20Full%20Stack%20Developer%20Resume-wwNjOr6X5BkykUtNIZAawEFP5q16fS.pdf"
+          rel="noopener noreferrer"
+          download
+          target="_blank"
+        >
+          <Button size="4" radius="medium" aria-label="Download Resume">
+            <Text weight="bold">Resume</Text>
           </Button>
         </Link>
       </Flex>
