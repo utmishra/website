@@ -1,3 +1,4 @@
+import { FileTextIcon, PersonIcon } from '@radix-ui/react-icons'
 import { Section, Flex, Button, Text } from '@radix-ui/themes'
 import Link from 'next/link'
 
@@ -10,6 +11,7 @@ export default function Links() {
         </Button> */}
         <Link href="/resume">
           <Button size="4" radius="medium" aria-label="View Resume">
+            <PersonIcon />
             <Text weight="bold">About Me</Text>
           </Button>
         </Link>
@@ -20,6 +22,7 @@ export default function Links() {
           target="_blank"
         >
           <Button size="4" radius="medium" aria-label="Download Resume">
+            <FileTextIcon />
             <Text weight="bold">Resume</Text>
           </Button>
         </Link>
