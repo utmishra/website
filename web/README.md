@@ -15,6 +15,7 @@ _A website about me_
 ### TODO
 
 - [ ] Add extensive experience details (expand experience to view more)
+- [ ] Display active navigation based on scroll position
 - [x] Resume PDF download URL
   - [ ] Auto downloadable
 - [ ] Improved navigation (Currently resume simply looks like a copy of PDF)
