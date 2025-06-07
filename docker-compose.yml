@@ -1,0 +1,24 @@
+services:
+  web:
+    build:
+      context: ./web
+    ports:
+      - "3000:3000"
+    working_dir: /app
+    volumes:
+      - ./web/:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - backend
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+    environment:
+      - NODE_ENV=development
