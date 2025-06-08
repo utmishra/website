@@ -13,8 +13,9 @@ export default function Block({ id, title, children }: BlockProps) {
       id={id}
       align={{ initial: 'center', sm: 'left', xs: 'left' }}
       style={{ width: '100%' }}
+      className="category-block"
     >
-      <Badge size="3" m="2">
+      <Badge size="3" m="2" variant="solid">
         {title}
       </Badge>
       <Container

@@ -1,0 +1,23 @@
+# Node
+node_modules
+.pnpm-store
+
+# Git
+.git
+.gitignore
+
+# Logs
+*.log
+
+# Editor/OS junk
+.DS_Store
+.vscode
+
+# Env and secrets
+.env
+.env.*
+
+# Build artifacts
+.next
+dist
+coverage

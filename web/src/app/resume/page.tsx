@@ -1,3 +1,5 @@
+'use client'
+
 import IdCard from '@components/ui/homepage/id-card'
 import Block from '@components/ui/resume/block'
 import Dropdown from '@components/ui/resume/categories'
@@ -7,12 +9,43 @@ import { Box, Flex, Grid, Section } from '@radix-ui/themes'
 import { experiences } from '@components/data/experiences'
 import { skills } from '@components/data/skills'
 import Skill from '@components/ui/resume/skill'
-import { AboutMe } from '@components/data/about-me'
+import AboutMe from '@components/data/about-me'
 import { responsiveWidth } from '@components/ui/common/styles'
-import Certifications from '@components/ui/resume/certifications'
-import Education from '@components/ui/resume/education'
+import { UIEventHandler, useEffect, useState } from 'react'
+import { BlockId } from '@components/ui/resume/types'
+import Qualifications from '@components/ui/homepage/qualifications'
 
 export default function Resume() {
+  const [activeSection, setActiveSection] = useState(BlockId.ABOUT_ME)
+  const sectionHeights: number[] = []
+  let sections: Element[]
+
+  useEffect(() => {
+    const section = document.querySelector('#sections')
+    if (section) {
+      // Each section's height: 300, 300, 1300, 300
+      let previousHeight = 0
+      sections = [...section.children]
+
+      for (const element of sections) {
+        const currentHeight = element.clientHeight
+        sectionHeights.push(previousHeight + currentHeight)
+        previousHeight += currentHeight
+      }
+    }
+  }, [sectionHeights])
+
+  const updateActiveSection: UIEventHandler<HTMLDivElement> = (event) => {
+    console.log('Scrolling')
+    const scrolledHeight = event.currentTarget.scrollTop
+    for (let i = 0; i < sectionHeights.length - 1; i++) {
+      const currentHeight = sectionHeights[i]
+      if (scrolledHeight >= currentHeight * 0.7) {
+        setActiveSection(sections[i + 1].id as BlockId)
+      }
+    }
+  }
+
   return (
     <Grid
       columns={{
@@ -37,10 +70,17 @@ export default function Resume() {
             xs: 'none',
           }}
         >
-          <Dropdown />
+          <Dropdown activeClass={activeSection} />
         </Box>
       </Box>
-      <Section p="0">
+      <Section
+        p="0"
+        height="calc(100vh - 64px)"
+        style={{
+          overflowY: 'scroll',
+        }}
+        onScroll={updateActiveSection}
+      >
         <Flex
           align={{
             xl: 'start',
@@ -65,6 +105,7 @@ export default function Resume() {
           <IdCard />
         </Flex>
         <Flex
+          id="sections"
           align={{
             xl: 'start',
             md: 'start',
@@ -107,11 +148,8 @@ export default function Resume() {
               <Experience key={generateId(experience.title)} {...experience} />
             ))}
           </Block>
-          <Block id="certifications" title="Certifications">
-            <Certifications />
-          </Block>
-          <Block id="education" title="Education">
-            <Education />
+          <Block id="qualifications" title="Qualifications">
+            <Qualifications />
           </Block>
         </Flex>
       </Section>
