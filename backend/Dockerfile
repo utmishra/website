@@ -5,7 +5,7 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="${PNPM_HOME}:${PATH}"
 
 # Install corepack and pnpm
-RUN corepack enable && corepack prepare pnpm@8.15.4 --activate
+RUN corepack enable && corepack prepare pnpm@10.12.1 --activate
 
 # Add non-root user
 RUN useradd --create-home --shell /bin/bash appuser
