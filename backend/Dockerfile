@@ -16,7 +16,7 @@ COPY package.json pnpm-lock.yaml ./
 
 # Install production dependencies
 FROM base AS prod-deps
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 # Install all dependencies and build
 FROM base AS build
