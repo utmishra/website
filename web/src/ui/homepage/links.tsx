@@ -1,4 +1,4 @@
-import { FileTextIcon, PersonIcon } from '@radix-ui/react-icons'
+import { ChatBubbleIcon, FileTextIcon, PersonIcon } from '@radix-ui/react-icons'
 import { Section, Flex, Button, Text } from '@radix-ui/themes'
 import Link from 'next/link'
 
@@ -24,6 +24,12 @@ export default function Links() {
           <Button size="4" radius="medium" aria-label="Download Resume">
             <FileTextIcon />
             <Text weight="bold">Resume</Text>
+          </Button>
+        </Link>
+        <Link href="/chat" rel="noopener noreferrer">
+          <Button size="4" radius="medium" aria-label="Chat with me">
+            <ChatBubbleIcon />
+            <Text weight="bold">Chat with me</Text>
           </Button>
         </Link>
       </Flex>

@@ -1,2 +1,6 @@
 .DS_Store
 .envrc
+.env
+
+.pnpm-store
+node_modules
