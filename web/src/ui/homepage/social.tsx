@@ -3,15 +3,13 @@ import {
   GitHubLogoIcon,
   LinkedInLogoIcon,
 } from '@radix-ui/react-icons'
-import { Flex, IconButton, type IconProps } from '@radix-ui/themes'
 import Link from 'next/link'
+import type { ComponentType, SVGProps } from 'react'
 
 const socialData: {
   id: string
   name: string
-  icon: React.ForwardRefExoticComponent<
-    IconProps & React.RefAttributes<SVGSVGElement>
-  >
+  icon: ComponentType<SVGProps<SVGSVGElement>>
   url: string
 }[] = [
   {
@@ -36,20 +34,7 @@ const socialData: {
 
 export function Social() {
   return (
-    <Flex
-      direction="row"
-      align={{
-        xl: 'start',
-        md: 'start',
-        sm: 'center',
-        xs: 'center',
-        initial: 'center',
-      }}
-      justify="start"
-      gap="4"
-      mt="2"
-      mb="2"
-    >
+    <div className="mt-2 mb-2 flex flex-row items-center justify-start gap-4">
       {socialData.map((data) => (
         <Link
           key={data.id}
@@ -57,15 +42,14 @@ export function Social() {
           target="_blank"
           aria-label={`External link to ${data.name} profile`}
         >
-          <IconButton
-            size="2"
-            variant="surface"
+          <button
+            className="rounded-full border p-2 hover:bg-[var(--blue-4)]"
             aria-label={`${data.name} button`}
           >
             <data.icon />
-          </IconButton>
+          </button>
         </Link>
       ))}
-    </Flex>
+    </div>
   )
 }
