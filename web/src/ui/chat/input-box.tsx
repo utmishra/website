@@ -4,9 +4,11 @@ import { Box, Flex, TextArea } from '@radix-ui/themes'
 const ChatThreadSelector = ({
   input,
   onChange,
+  onKeyPress,
 }: {
   input: string
   onChange: (value: string) => void
+  onKeyPress: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void
 }) => (
   <Box height="6rem" width="100%">
     <TextArea
@@ -15,7 +17,8 @@ const ChatThreadSelector = ({
       value={input}
       onChange={(e) => onChange(e.target.value)}
       size="3"
-      style={{ width: '100%' }}
+      className="bg-color-white"
+      onKeyUp={onKeyPress}
     />
   </Box>
 )

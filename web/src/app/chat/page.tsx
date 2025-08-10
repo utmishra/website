@@ -14,7 +14,6 @@ export default function ChatPage() {
         minWidth: '100%',
       }}
     >
-      <Header />
       <Chat />
     </Flex>
   )

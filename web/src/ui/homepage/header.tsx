@@ -3,10 +3,18 @@
 import React from 'react'
 import { useTheme } from 'next-themes'
 import { HomeIcon, MoonIcon, SunIcon } from '@radix-ui/react-icons'
-import { Flex, IconButton, Link, Tooltip } from '@radix-ui/themes'
+import { Flex, Heading, IconButton, Link, Tooltip } from '@radix-ui/themes'
+import { usePathname } from 'next/navigation'
 
 export const Header = () => {
   const { theme, systemTheme, setTheme } = useTheme()
+  const pathname = usePathname()
+
+  const titleMap: Record<string, string> = {
+    '/': 'Home',
+    '/chat': 'New Chat',
+    '/resume': 'About Me',
+  }
 
   return (
     <Flex
@@ -25,6 +33,11 @@ export const Header = () => {
           <HomeIcon></HomeIcon>
         </IconButton>
       </Link>
+      {titleMap[pathname] != '/' ? (
+        <Heading as="h1" className="text-xl font-bold">
+          {titleMap[pathname]}
+        </Heading>
+      ) : null}
       <Tooltip
         align="end"
         className="radix-themes-custom-fonts position"

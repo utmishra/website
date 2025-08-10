@@ -1,6 +1,5 @@
 'use client'
 
-import { UIDataTypes, UIMessage, UIMessagePart, UITools } from 'ai'
 import { useChat } from '@ai-sdk/react'
 import { useState } from 'react'
 
@@ -12,28 +11,32 @@ import { MessageBubble } from './message-bubble'
 export function Chat() {
   const [input, setInput] = useState<string>('')
 
-  // const { messages, sendMessage } = useChat()
-  const messages: UIMessage[] = [
-    {
-      id: '1',
-      role: 'user',
-      parts: [{ type: 'text', text: 'Hello!' }],
-    },
-    {
-      id: '2',
-      role: 'assistant',
-      parts: [{ type: 'text', text: 'Hi there! How can I help you today?' }],
-    },
-  ]
+  const { id, messages, sendMessage } = useChat()
 
-  const handleInputChange = (event: React.SyntheticEvent<HTMLFormElement>) => {
+  const handleInputChange = (
+    event:
+      | React.SyntheticEvent<HTMLFormElement>
+      | React.KeyboardEvent<HTMLTextAreaElement>,
+  ) => {
     event.preventDefault()
     if (!input.trim()) return // Prevent sending empty messages
-    // sendMessage({
-    //   role: 'user',
-    //   parts: [{ type: 'text', text: input }],
-    // })
+    sendMessage({
+      id,
+      role: 'user',
+      parts: [{ type: 'text', text: input }],
+    })
     setInput('')
+  }
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter') {
+      if (event.shiftKey) {
+        // Allow new line
+        return true
+      } else {
+        handleInputChange(event)
+      }
+    }
   }
 
   return (
@@ -42,7 +45,15 @@ export function Chat() {
       direction="column"
       style={{ minHeight: '100%', minWidth: '100%' }}
     >
-      <Flex px="4" display="flex" direction="column">
+      <Flex
+        px="1"
+        display="flex"
+        direction="column"
+        overflowY="scroll"
+        style={{
+          height: 'calc(100dvh - 12rem)',
+        }}
+      >
         {messages.map((message, index) => (
           <MessageBubble key={index} message={message} />
         ))}
@@ -58,7 +69,11 @@ export function Chat() {
           paddingBottom: 'max(1rem, env(safe-area-inset-bottom))',
         }}
       >
-        <InputBox input={input} onChange={setInput} />
+        <InputBox
+          input={input}
+          onChange={setInput}
+          onKeyPress={handleKeyPress}
+        />
         <Button
           size="4"
           type="submit"
