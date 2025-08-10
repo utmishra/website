@@ -18,7 +18,7 @@ export const Header = () => {
       <button
         className="rounded-full p-2 text-[var(--blue-12)] hover:bg-[var(--blue-4)]"
         aria-label="Toggle theme"
-        title="Toggle theme"
+        aria-describedby="theme-toggle-desc"
         onClick={() => {
           const resolvedTheme = theme === 'system' ? systemTheme : theme
           const newTheme = resolvedTheme === 'dark' ? 'light' : 'dark'
