@@ -1,6 +1,10 @@
+@import 'tailwindcss';
+
 :root,
 .light,
 .light-theme {
+  --background: #ffffff;
+  --foreground: var(--blue-12);
   --blue-1: #fafdff;
   --blue-2: #f3f9ff;
   --blue-3: #e4f4ff;
@@ -81,6 +85,8 @@
 
 .dark,
 .dark-theme {
+  --background: #082339;
+  --foreground: var(--blue-12);
   --blue-1: #07121b;
   --blue-2: #0c1a25;
   --blue-3: #032943;
