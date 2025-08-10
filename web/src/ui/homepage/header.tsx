@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { useTheme } from 'next-themes'
-import { HomeIcon, MoonIcon, SunIcon } from '@radix-ui/react-icons'
+import { Home, Moon, Sun } from 'lucide-react'
 import Link from 'next/link'
 
 export const Header = () => {
@@ -12,7 +12,7 @@ export const Header = () => {
     <div className="flex w-full flex-row justify-between p-5">
       <Link href="/" aria-label="Home page">
         <button className="rounded-full p-2 text-[var(--blue-12)] hover:bg-[var(--blue-4)]">
-          <HomeIcon />
+          <Home />
         </button>
       </Link>
       <button
@@ -26,16 +26,8 @@ export const Header = () => {
           setTheme(newThemeMatchesSystem ? 'system' : newTheme)
         }}
       >
-        <SunIcon
-          width="16"
-          height="16"
-          style={{ display: 'var(--theme-toggle-sun-icon-display)' }}
-        />
-        <MoonIcon
-          width="16"
-          height="16"
-          style={{ display: 'var(--theme-toggle-moon-icon-display)' }}
-        />
+        <Sun size={16} style={{ display: 'var(--theme-toggle-sun-icon-display)' }} />
+        <Moon size={16} style={{ display: 'var(--theme-toggle-moon-icon-display)' }} />
       </button>
     </div>
   )

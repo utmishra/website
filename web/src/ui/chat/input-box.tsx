@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Box, Flex, TextArea } from '@radix-ui/themes'
+import { Box, TextArea } from '@radix-ui/themes'
 
 const ChatThreadSelector = ({
   input,

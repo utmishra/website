@@ -1,8 +1,4 @@
-import {
-  EnvelopeOpenIcon,
-  GitHubLogoIcon,
-  LinkedInLogoIcon,
-} from '@radix-ui/react-icons'
+import { Mail, Github, Linkedin } from 'lucide-react'
 import Link from 'next/link'
 import type { ComponentType, SVGProps } from 'react'
 
@@ -15,19 +11,19 @@ const socialData: {
   {
     id: 'github',
     name: 'Github',
-    icon: GitHubLogoIcon,
+    icon: Github,
     url: 'https://github.com/utmishra',
   },
   {
     id: 'linkedin',
     name: 'LinkedIn',
-    icon: LinkedInLogoIcon,
+    icon: Linkedin,
     url: 'https://www.linkedin.com/in/utmishra/',
   },
   {
     id: 'email',
     name: 'Email',
-    icon: EnvelopeOpenIcon,
+    icon: Mail,
     url: 'mailto:utmishra@gmail.com',
   },
 ]

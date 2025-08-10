@@ -1,4 +1,4 @@
-import { ChatBubbleIcon, FileTextIcon, PersonIcon } from '@radix-ui/react-icons'
+import { MessageCircle, FileText, Person } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@components/ui/common/button'
 
@@ -9,7 +9,7 @@ export default function Links() {
         {/* <Button>Search</Button> */}
         <Link href="/resume">
           <Button aria-label="View Resume">
-            <PersonIcon />
+            <Person />
             <span className="font-bold">About Me</span>
           </Button>
         </Link>
@@ -20,13 +20,13 @@ export default function Links() {
           target="_blank"
         >
           <Button aria-label="Download Resume">
-            <FileTextIcon />
+            <FileText />
             <span className="font-bold">Resume</span>
           </Button>
         </Link>
         <Link href="/chat" rel="noopener noreferrer">
           <Button aria-label="Chat with me">
-            <ChatBubbleIcon />
+            <MessageCircle />
             <span className="font-bold">Chat with me</span>
           </Button>
         </Link>
