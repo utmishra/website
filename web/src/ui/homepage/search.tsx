@@ -1,4 +1,4 @@
-import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
+import { Search } from 'lucide-react'
 import { Box, TextField } from '@radix-ui/themes'
 
 export default function Search() {
@@ -6,7 +6,7 @@ export default function Search() {
     <Box mt="4">
       <TextField.Root placeholder="Ask about me…" size="3">
         <TextField.Slot>
-          <MagnifyingGlassIcon height="16" width="16" />
+          <Search size={16} />
         </TextField.Slot>
       </TextField.Root>
     </Box>

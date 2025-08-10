@@ -1,12 +1,11 @@
 'use client'
 
-import { UIDataTypes, UIMessage, UIMessagePart, UITools } from 'ai'
-import { useChat } from '@ai-sdk/react'
+import { UIMessage } from 'ai'
 import { useState } from 'react'
 
 import InputBox from './input-box'
-import { Box, Button, Flex } from '@radix-ui/themes'
-import { ArrowUpIcon } from '@radix-ui/react-icons'
+import { Button, Flex } from '@radix-ui/themes'
+import { ArrowUp } from 'lucide-react'
 import { MessageBubble } from './message-bubble'
 
 export function Chat() {
@@ -68,7 +67,7 @@ export function Chat() {
             bottom: '3rem',
           }}
         >
-          <ArrowUpIcon />
+          <ArrowUp />
         </Button>
       </form>
     </Flex>
