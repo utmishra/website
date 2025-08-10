@@ -1,18 +1,16 @@
 import { ChatBubbleIcon, FileTextIcon, PersonIcon } from '@radix-ui/react-icons'
-import { Section, Flex, Button, Text } from '@radix-ui/themes'
 import Link from 'next/link'
+import { Button } from '@components/ui/common/button'
 
 export default function Links() {
   return (
-    <Section size="1">
-      <Flex gap="6" direction="row" align="center" justify="center">
-        {/* <Button size="4" radius="medium">
-          <Text weight="bold">Search</Text>
-        </Button> */}
+    <section className="mt-4">
+      <div className="flex flex-row items-center justify-center gap-6">
+        {/* <Button>Search</Button> */}
         <Link href="/resume">
-          <Button size="4" radius="medium" aria-label="View Resume">
+          <Button aria-label="View Resume">
             <PersonIcon />
-            <Text weight="bold">About Me</Text>
+            <span className="font-bold">About Me</span>
           </Button>
         </Link>
         <Link
@@ -21,18 +19,18 @@ export default function Links() {
           download
           target="_blank"
         >
-          <Button size="4" radius="medium" aria-label="Download Resume">
+          <Button aria-label="Download Resume">
             <FileTextIcon />
-            <Text weight="bold">Resume</Text>
+            <span className="font-bold">Resume</span>
           </Button>
         </Link>
         <Link href="/chat" rel="noopener noreferrer">
-          <Button size="4" radius="medium" aria-label="Chat with me">
+          <Button aria-label="Chat with me">
             <ChatBubbleIcon />
-            <Text weight="bold">Chat with me</Text>
+            <span className="font-bold">Chat with me</span>
           </Button>
         </Link>
-      </Flex>
-    </Section>
+      </div>
+    </section>
   )
 }

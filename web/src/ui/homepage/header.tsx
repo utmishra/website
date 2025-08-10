@@ -3,57 +3,40 @@
 import React from 'react'
 import { useTheme } from 'next-themes'
 import { HomeIcon, MoonIcon, SunIcon } from '@radix-ui/react-icons'
-import { Flex, IconButton, Link, Tooltip } from '@radix-ui/themes'
+import Link from 'next/link'
 
 export const Header = () => {
   const { theme, systemTheme, setTheme } = useTheme()
 
   return (
-    <Flex
-      direction="row"
-      p="20px"
-      width="100%"
-      style={{ justifyContent: 'space-between' }}
-    >
-      <Link href="/">
-        <IconButton
-          size="4"
-          variant="ghost"
-          color="gray"
-          aria-label="Home page"
-        >
-          <HomeIcon></HomeIcon>
-        </IconButton>
+    <div className="flex w-full flex-row justify-between p-5">
+      <Link href="/" aria-label="Home page">
+        <button className="rounded-full p-2 text-[var(--blue-12)] hover:bg-[var(--blue-4)]">
+          <HomeIcon />
+        </button>
       </Link>
-      <Tooltip
-        align="end"
-        className="radix-themes-custom-fonts position"
-        content="Toggle theme"
+      <button
+        className="rounded-full p-2 text-[var(--blue-12)] hover:bg-[var(--blue-4)]"
+        aria-label="Toggle theme"
+        aria-describedby="theme-toggle-desc"
+        onClick={() => {
+          const resolvedTheme = theme === 'system' ? systemTheme : theme
+          const newTheme = resolvedTheme === 'dark' ? 'light' : 'dark'
+          const newThemeMatchesSystem = newTheme === systemTheme
+          setTheme(newThemeMatchesSystem ? 'system' : newTheme)
+        }}
       >
-        <IconButton
-          size="4"
-          variant="ghost"
-          color="gray"
-          aria-label="Toggle theme"
-          onClick={() => {
-            const resolvedTheme = theme === 'system' ? systemTheme : theme
-            const newTheme = resolvedTheme === 'dark' ? 'light' : 'dark'
-            const newThemeMatchesSystem = newTheme === systemTheme
-            setTheme(newThemeMatchesSystem ? 'system' : newTheme)
-          }}
-        >
-          <SunIcon
-            width="16"
-            height="16"
-            style={{ display: 'var(--theme-toggle-sun-icon-display)' }}
-          />
-          <MoonIcon
-            width="16"
-            height="16"
-            style={{ display: 'var(--theme-toggle-moon-icon-display)' }}
-          />
-        </IconButton>
-      </Tooltip>
-    </Flex>
+        <SunIcon
+          width="16"
+          height="16"
+          style={{ display: 'var(--theme-toggle-sun-icon-display)' }}
+        />
+        <MoonIcon
+          width="16"
+          height="16"
+          style={{ display: 'var(--theme-toggle-moon-icon-display)' }}
+        />
+      </button>
+    </div>
   )
 }

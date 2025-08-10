@@ -5,6 +5,7 @@ import { Theme } from '@radix-ui/themes'
 import { ThemeProvider } from 'next-themes'
 import { Noto_Sans_Mono } from 'next/font/google'
 import { Header } from '@components/ui/homepage/header'
+import { cn } from '@components/utils/cn'
 
 const notoSansMono = Noto_Sans_Mono({
   subsets: ['latin'],
@@ -22,8 +23,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={notoSansMono.className} suppressHydrationWarning>
-      <body>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={cn(
+          'min-h-screen bg-background font-sans antialiased',
+          notoSansMono.className,
+        )}
+      >
         <ThemeProvider attribute="class" enableSystem>
           <Theme
             accentColor="blue"
@@ -32,7 +38,7 @@ export default function RootLayout({
             radius="full"
             appearance="inherit"
           >
-            <main>
+            <main className="min-h-screen">
               <Header />
 
               {children}
