@@ -1,6 +1,6 @@
 import IdCard from '@components/ui/homepage/id-card'
 import Links from '@components/ui/homepage/links'
-import { Card } from '@components/ui/shadcn/card'
+import { Card } from '@components/ui/common/card'
 
 export default function Home() {
   return (

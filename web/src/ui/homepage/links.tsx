@@ -1,6 +1,6 @@
 import { ChatBubbleIcon, FileTextIcon, PersonIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
-import { Button } from '@components/ui/shadcn/button'
+import { Button } from '@components/ui/common/button'
 
 export default function Links() {
   return (
