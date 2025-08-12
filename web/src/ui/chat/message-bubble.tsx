@@ -45,10 +45,11 @@ export const MessageBubble = ({ message, showLoading }: MessageBubbleProps) => {
         if (!content) return null
         const type = (part as any).type as string | undefined
         const isMeta =
-          !!type &&
-          (type === 'reasoning' ||
-            type === 'dynamic-tool' ||
-            type.startsWith?.('tool-'))
+          (!!type &&
+            (type === 'reasoning' ||
+              type === 'dynamic-tool' ||
+              type.startsWith?.('tool-'))) ||
+          type === 'step-start'
 
         if (isMeta) {
           return (
@@ -78,7 +79,7 @@ export const MessageBubble = ({ message, showLoading }: MessageBubbleProps) => {
           <div
             key={`${message.id}-part-${index}`}
             style={{
-              padding: '0.5rem 1rem',
+              padding: '1rem 2rem',
               borderRadius: '25px',
               margin: '0.5rem',
               backgroundColor:

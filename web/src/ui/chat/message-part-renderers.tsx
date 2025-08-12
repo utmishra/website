@@ -1,6 +1,7 @@
 import React from 'react'
 import type { UIMessage } from '@ai-sdk/react'
 import { Markdown } from './markdown'
+import { logger } from '@components/lib/logging/logger'
 
 // Helper to create a stable-ish key for text parts
 function keyFromText(prefix: string, text: string, fallback: string) {
@@ -112,7 +113,7 @@ const staticRenderers: Record<
   'step-start': (_part, index) =>
     index > 0 ? (
       <div className="text-gray-500" key={`step-${index}`}>
-        <hr className="my-2 border-gray-300" />
+        <hr className="min-w-12 my-2 border-gray-300" />
       </div>
     ) : null,
   'dynamic-tool': (part) => (
@@ -123,7 +124,6 @@ const staticRenderers: Record<
   ),
   text: (part) => (
     <span key={keyFromText('text', part.text, 'text')}>
-      {' '}
       <Markdown>{part.text}</Markdown>{' '}
     </span>
   ),
@@ -144,6 +144,9 @@ export function renderMessagePart(
   const toolNode = renderFriendlyToolMessage(part)
   if (toolNode) return toolNode
 
+  if (part.type === 'text') {
+    logger.info('Text content', part.text)
+  }
   const renderer = staticRenderers[part.type]
   if (renderer) return renderer(part, index)
 

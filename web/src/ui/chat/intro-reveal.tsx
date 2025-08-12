@@ -10,7 +10,7 @@ interface IntroRevealProps {
 
 // Simple character fade/slide reveal before chat starts.
 export const IntroReveal: React.FC<IntroRevealProps> = ({
-  text = 'Ask me anything about this project.',
+  text = 'Ask me anything....',
   onFinish,
   delayPerCharMs = 30,
 }) => {
@@ -25,7 +25,8 @@ export const IntroReveal: React.FC<IntroRevealProps> = ({
     return () => clearTimeout(t)
   }, [text, delayPerCharMs, onFinish])
 
-  if (done) return null
+  // Previously the component returned null once animation finished, hiding the text.
+  // We keep rendering so the revealed text remains visible after the intro.
 
   return (
     <div

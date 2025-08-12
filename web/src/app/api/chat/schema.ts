@@ -194,28 +194,9 @@ export function buildToolSchemas(options: BuildOptions = {}): ToolSet {
           inputSchema: def.inputSchema,
           execute: async (args: any) => {
             const started = Date.now()
-            logger.info(
-              {
-                ...ctx,
-                toolCallId,
-                tool: name,
-                args: includeInputs ? args : undefined,
-              },
-              'tool.start',
-            )
 
             try {
               const result = await def.execute(args)
-              logger.info(
-                {
-                  ...ctx,
-                  toolCallId,
-                  tool: name,
-                  ms: Date.now() - started,
-                  ok: true,
-                },
-                'tool.finish',
-              )
 
               return result
             } catch (err: any) {
