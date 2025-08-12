@@ -3,7 +3,7 @@ import { renderMessagePart } from './message-part-renderers'
 import { memo } from 'react'
 import { motion } from 'motion/react'
 
-const LoadingDots = memo(function LoadingDots() {
+export const LoadingDots = memo(function LoadingDots() {
   const dots = [0, 1, 2]
   return (
     <span style={{ display: 'inline-flex', gap: 4, alignItems: 'center' }}>
@@ -54,7 +54,7 @@ const signature = (m: UIMessage) =>
 const MessageBubbleInner = ({ message, showLoading }: MessageBubbleProps) => {
   return (
     <>
-      {message.parts.map((part, index) => {
+  {message.parts.map((part, index) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any -- external lib message part
         const content = renderMessagePart(part as any, index)
         if (!content) return null
@@ -68,6 +68,10 @@ const MessageBubbleInner = ({ message, showLoading }: MessageBubbleProps) => {
           type === 'step-start'
 
         if (isMeta) {
+          const isReasoning = type === 'reasoning'
+          const isToolLine = !!type && type.startsWith?.('tool-')
+          // Inline dots removed; they now appear in their own line below all parts.
+          const showDotsHere = false
           return (
             <motion.div
               key={`${message.id}-meta-${index}`}
@@ -86,9 +90,6 @@ const MessageBubbleInner = ({ message, showLoading }: MessageBubbleProps) => {
                 gap: 6,
               }}
             >
-              {showLoading && index === message.parts.length - 1 && (
-                <LoadingDots />
-              )}
               <span style={{ flex: 1 }}>{content}</span>
             </motion.div>
           )
@@ -115,13 +116,30 @@ const MessageBubbleInner = ({ message, showLoading }: MessageBubbleProps) => {
               alignSelf: message.role === 'user' ? 'flex-end' : 'flex-start',
             }}
           >
-            {showLoading && index === message.parts.length - 1 && (
-              <LoadingDots />
-            )}
             <div style={{ flex: 1 }}>{content}</div>
           </motion.div>
         )
       })}
+      {showLoading && message.role !== 'user' && (
+        <motion.div
+          key={`${message.id}-loading`}
+          initial={{ opacity: 0, y: 4 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          style={{
+            margin: '0.25rem 0.75rem',
+            fontSize: '0.7rem',
+            lineHeight: 1.2,
+            color: 'var(--gray-11)',
+            maxWidth: '70ch',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+          }}
+        >
+          <LoadingDots />
+        </motion.div>
+      )}
     </>
   )
 }
