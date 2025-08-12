@@ -20,6 +20,7 @@ import {
 } from '../../../lib/tools/file-system'
 import { logger } from '@components/lib/logging/logger'
 import { getCtx } from '@components/lib/logging/context'
+import { braveWebSearch, fetchWebPage } from '../../../lib/tools/web-external'
 
 // Reusable schemas
 const pathSchema = z
@@ -61,6 +62,50 @@ const listDirOptionsSchema: z.ZodType<ListDirOptions> = z
 // NOTE: These are the raw, un-instrumented definitions. Use buildToolSchemas to
 // get versions that stream progress events to the UI data stream.
 const rawToolSchemas = {
+  // --- External knowledge / web tools ---
+  // NOTE: These tools perform network calls. Ensure they are only invoked server-side.
+  braveWebSearch: {
+    description:
+      'Perform a Brave Web Search for a natural language query. Requires BRAVE_API_KEY env var. Returns concise result summaries.',
+    inputSchema: z
+      .object({
+        query: z.string().min(2).max(300).describe('Search query string.'),
+        count: z
+          .number()
+          .int()
+          .min(1)
+          .max(20)
+          .default(5)
+          .describe('Number of results to request (1-20).'),
+        safesearch: z
+          .enum(['off', 'moderate', 'strict'])
+          .default('strict')
+          .describe('Adult content filtering level.'),
+      })
+      .strict(),
+    execute: braveWebSearch,
+  },
+  fetchWebPage: {
+    description:
+      'Fetch a web page (HTML or text) and extract clean text + title. Designed for grounding answers. Respects maxBytes to avoid huge pages.',
+    inputSchema: z
+      .object({
+        url: z.string().url().describe('Absolute HTTP(S) URL to fetch.'),
+        maxBytes: z
+          .number()
+          .int()
+          .min(1024)
+          .max(500_000)
+          .default(200_000)
+          .describe('Maximum bytes to read from response body (safeguard).'),
+        includeHtml: z
+          .boolean()
+          .optional()
+          .describe('If true, include trimmed raw HTML in response.'),
+      })
+      .strict(),
+    execute: fetchWebPage,
+  },
   resolveSafePath: {
     description:
       'Resolve a path against the sandbox root ensuring it does not escape (prevents traversal).',

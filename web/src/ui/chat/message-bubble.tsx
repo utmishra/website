@@ -3,7 +3,7 @@ import { renderMessagePart } from './message-part-renderers'
 import { memo } from 'react'
 import { motion } from 'motion/react'
 
-const LoadingDots = memo(() => {
+const LoadingDots = memo(function LoadingDots() {
   const dots = [0, 1, 2]
   return (
     <span style={{ display: 'inline-flex', gap: 4, alignItems: 'center' }}>
@@ -31,18 +31,34 @@ const LoadingDots = memo(() => {
     </span>
   )
 })
+LoadingDots.displayName = 'LoadingDots'
 
 interface MessageBubbleProps {
   message: UIMessage
   showLoading?: boolean
 }
 
-export const MessageBubble = ({ message, showLoading }: MessageBubbleProps) => {
+// Signature helper for shallow-ish comparison (tracks part counts & text lengths)
+// Derive a simple signature for memo compare. The SDK doesn't export a granular part type.
+const signature = (m: UIMessage) =>
+  m.parts
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic library part shape
+    .map(
+      (p: any) =>
+        `${(p as any).type}:${
+          typeof (p as any).text === 'string' ? (p as any).text.length : ''
+        }`,
+    )
+    .join('|')
+
+const MessageBubbleInner = ({ message, showLoading }: MessageBubbleProps) => {
   return (
     <>
       {message.parts.map((part, index) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- external lib message part
         const content = renderMessagePart(part as any, index)
         if (!content) return null
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- external lib message part
         const type = (part as any).type as string | undefined
         const isMeta =
           (!!type &&
@@ -53,8 +69,11 @@ export const MessageBubble = ({ message, showLoading }: MessageBubbleProps) => {
 
         if (isMeta) {
           return (
-            <div
+            <motion.div
               key={`${message.id}-meta-${index}`}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
               style={{
                 margin: '0.25rem 0.75rem',
                 fontSize: '0.7rem',
@@ -71,13 +90,16 @@ export const MessageBubble = ({ message, showLoading }: MessageBubbleProps) => {
                 <LoadingDots />
               )}
               <span style={{ flex: 1 }}>{content}</span>
-            </div>
+            </motion.div>
           )
         }
 
         return (
-          <div
+          <motion.div
             key={`${message.id}-part-${index}`}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
             style={{
               padding: '1rem 2rem',
               borderRadius: '25px',
@@ -97,9 +119,19 @@ export const MessageBubble = ({ message, showLoading }: MessageBubbleProps) => {
               <LoadingDots />
             )}
             <div style={{ flex: 1 }}>{content}</div>
-          </div>
+          </motion.div>
         )
       })}
     </>
   )
 }
+MessageBubbleInner.displayName = 'MessageBubbleInner'
+
+export const MessageBubble = memo(
+  MessageBubbleInner,
+  (prev, next) =>
+    prev.showLoading === next.showLoading &&
+    prev.message.id === next.message.id &&
+    signature(prev.message) === signature(next.message),
+)
+MessageBubble.displayName = 'MessageBubble'

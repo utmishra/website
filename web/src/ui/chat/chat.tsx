@@ -1,7 +1,7 @@
 'use client'
 
 import { UIMessage, useChat } from '@ai-sdk/react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { memo, useEffect, useMemo, useRef, useState } from 'react'
 
 import { ArrowUpIcon } from '@radix-ui/react-icons'
 import { Button, Flex } from '@radix-ui/themes'
@@ -9,7 +9,7 @@ import InputBox from './input-box'
 import { MessageBubble } from './message-bubble'
 import { IntroReveal } from './intro-reveal'
 
-export function Chat() {
+function ChatInner() {
   const [input, setInput] = useState<string>('')
 
   const { id, messages, sendMessage, status, error } = useChat()
@@ -93,17 +93,24 @@ export function Chat() {
       >
         {showIntro && <IntroReveal />}
         {!showIntro &&
-          derivedMessages.map((message, idx) => (
-            <MessageBubble
-              key={message.id}
-              message={message}
-              showLoading={
-                idx === derivedMessages.length - 1 && // only last bubble
-                status !== 'ready' &&
-                status !== 'error'
-              }
-            />
-          ))}
+          derivedMessages.map((message, idx) => {
+            // Create a stable unique key including part count + last part type
+            const last = message.parts[message.parts.length - 1]
+            const lastType =
+              (last as { type?: string } | undefined)?.type || 'none'
+            const structuralKey = `${message.id}-${message.parts.length}-${lastType}`
+            return (
+              <MessageBubble
+                key={structuralKey}
+                message={message}
+                showLoading={
+                  idx === derivedMessages.length - 1 && // only last bubble
+                  status !== 'ready' &&
+                  status !== 'error'
+                }
+              />
+            )
+          })}
         <div ref={bottomRef} style={{ height: 1 }} />
       </Flex>
       <form
@@ -137,3 +144,6 @@ export function Chat() {
     </Flex>
   )
 }
+
+export const Chat = memo(ChatInner)
+Chat.displayName = 'Chat'
