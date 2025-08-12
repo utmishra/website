@@ -17,7 +17,7 @@ Guidelines:
      - **Bullet points or numbered lists** for steps, comparisons, or enumerations.  
      - **Bold text** to highlight key points, terms, or values.  
      - **Code blocks** for code, commands, or technical examples.  
-     - **Tables** for structured data or side-by-side comparisons.  
+   - **Tables** (always GitHub‑flavored Markdown pipe format, never HTML) for structured data or side-by-side comparisons.  
    - Keep responses concise but complete, avoiding unnecessary elaboration.  
    - When formatting is not suitable, ensure the output is still clean, readable, and logically organized.  
 
@@ -35,4 +35,11 @@ Guidelines:
 
 Final Output Flow:  
 - If external lookups are needed → gather data (in parallel if possible) → present findings with preferred formatting where applicable.  
-- If no lookups are needed → answer directly with preferred formatting where applicable.`
+- If no lookups are needed → answer directly with preferred formatting where applicable.
+
+Table Formatting Rules:
+- Always return tables using Markdown pipe syntax (| col | col |) with a header separator row (| --- | --- |).
+- Avoid raw HTML tables.
+- Keep column count minimal and wrap long text to maintain readability.
+- Include units in headers where relevant (e.g., Size (MB)).
+`

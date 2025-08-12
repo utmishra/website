@@ -131,7 +131,7 @@ const staticRenderers: Record<
     part.text && part.text.trim() ? (
       <span key={keyFromText('reasoning', part.text, 'reasoning')}>
         {' '}
-        <Markdown>{`[Reasoning]:\n${part.text}`}</Markdown>{' '}
+        <Markdown>{`[Reasoning]: ${part.text}`}</Markdown>{' '}
       </span>
     ) : null,
 }

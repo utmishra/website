@@ -121,21 +121,24 @@ function ChatInner() {
         })}
         {showIntroInline && <IntroReveal key="intro-inline" />}
         {/* Placeholder loading dots after first user message while waiting for assistant start */}
-        {hasUserMessage && !hasAssistantMessage && status !== 'error' && status !== 'ready' && (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8,
-              margin: '0.25rem 0.75rem',
-              fontSize: '0.7rem',
-              color: 'var(--gray-11)',
-              maxWidth: '70ch',
-            }}
-          >
-            <LoadingDots />
-          </div>
-        )}
+        {hasUserMessage &&
+          !hasAssistantMessage &&
+          status !== 'error' &&
+          status !== 'ready' && (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+                margin: '0.25rem 0.75rem',
+                fontSize: '0.7rem',
+                color: 'var(--gray-11)',
+                maxWidth: '70ch',
+              }}
+            >
+              <LoadingDots />
+            </div>
+          )}
         <div ref={bottomRef} style={{ height: 1 }} />
       </Flex>
       <form
@@ -163,7 +166,8 @@ function ChatInner() {
             right: '2rem',
             bottom: '3rem',
             opacity: status !== 'ready' && status !== 'error' ? 0.5 : 1,
-            pointerEvents: status !== 'ready' && status !== 'error' ? 'none' : 'auto',
+            pointerEvents:
+              status !== 'ready' && status !== 'error' ? 'none' : 'auto',
             transition: 'opacity 0.2s ease',
           }}
         >

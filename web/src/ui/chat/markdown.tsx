@@ -8,6 +8,50 @@ const components: Partial<Components> = {
   // @ts-expect-error
   code: CodeBlock,
   pre: ({ children }) => <>{children}</>,
+  table: ({ node, children, ...props }) => (
+    <div className="w-full overflow-x-auto my-4">
+      <table
+        className="w-full text-sm border-collapse caption-bottom rounded-md border border-border/50 [&_code]:text-xs"
+        {...props}
+      >
+        {children}
+      </table>
+    </div>
+  ),
+  thead: ({ node, children, ...props }) => (
+    <thead
+      className="bg-muted/40 border-b border-border/60 [&_th]:text-muted-foreground"
+      {...props}
+    >
+      {children}
+    </thead>
+  ),
+  tbody: ({ node, children, ...props }) => (
+    <tbody className="divide-y divide-border/50" {...props}>
+      {children}
+    </tbody>
+  ),
+  tr: ({ node, children, ...props }) => (
+    <tr
+      className="hover:bg-muted/40 data-[state=selected]:bg-muted transition-colors"
+      {...props}
+    >
+      {children}
+    </tr>
+  ),
+  th: ({ node, children, ...props }) => (
+    <th
+      className="h-9 px-3 text-left align-middle font-medium text-[0.75rem] uppercase tracking-wide text-muted-foreground whitespace-nowrap"
+      {...props}
+    >
+      {children}
+    </th>
+  ),
+  td: ({ node, children, ...props }) => (
+    <td className="h-9 px-3 align-middle whitespace-nowrap" {...props}>
+      {children}
+    </td>
+  ),
   ol: ({ node, children, ...props }) => {
     return (
       <ol className="list-decimal list-outside ml-4" {...props}>

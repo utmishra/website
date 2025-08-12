@@ -54,7 +54,7 @@ const signature = (m: UIMessage) =>
 const MessageBubbleInner = ({ message, showLoading }: MessageBubbleProps) => {
   return (
     <>
-  {message.parts.map((part, index) => {
+      {message.parts.map((part, index) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any -- external lib message part
         const content = renderMessagePart(part as any, index)
         if (!content) return null
