@@ -1,5 +1,4 @@
 import { Chat } from '@components/ui/chat/chat'
-import { Header } from '@components/ui/chat/header'
 import { Flex } from '@radix-ui/themes'
 
 export default function ChatPage() {

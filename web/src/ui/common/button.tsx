@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { cn } from '@components/utils/cn'
+import { cn } from '@components/lib/cn'
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>
 
@@ -15,4 +15,3 @@ export function Button({ className, ...props }: ButtonProps) {
     />
   )
 }
-

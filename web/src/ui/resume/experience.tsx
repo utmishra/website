@@ -1,4 +1,4 @@
-import { generateId } from '@components/utils/component'
+import { generateId } from '@components/lib/component'
 import {
   Container,
   Box,

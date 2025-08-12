@@ -5,7 +5,7 @@ import { Theme } from '@radix-ui/themes'
 import { ThemeProvider } from 'next-themes'
 import { Noto_Sans_Mono } from 'next/font/google'
 import { Header } from '@components/ui/homepage/header'
-import { cn } from '@components/utils/cn'
+import { cn } from '@components/lib/cn'
 
 const notoSansMono = Noto_Sans_Mono({
   subsets: ['latin'],

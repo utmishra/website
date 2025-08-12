@@ -1,7 +1,8 @@
-import { UIMessage } from '@ai-sdk/react'
-import { Markdown } from './markdown'
+import type { UIMessage } from '@ai-sdk/react'
+import { renderMessageParts } from './message-part-renderers'
 
 export const MessageBubble = ({ message }: { message: UIMessage }) => {
+  console.log(message.parts.map((part) => part.type))
   return (
     <div
       key={message.id}
@@ -18,37 +19,7 @@ export const MessageBubble = ({ message }: { message: UIMessage }) => {
         flexDirection: 'column',
       }}
     >
-      <div>
-        {message.parts.map((part, index) => {
-          switch (part.type) {
-            case 'step-start':
-              // show step boundaries as horizontal lines:
-              return index > 0 ? (
-                <div key={index} className="text-gray-500">
-                  <hr className="my-2 border-gray-300" />
-                </div>
-              ) : null
-            case 'text':
-              return (
-                <span
-                  key={index}
-                  style={{ display: 'block', marginBottom: '0.25rem' }}
-                >
-                  <Markdown>{part.text}</Markdown>
-                </span>
-              )
-            default:
-              return (
-                <span
-                  key={index}
-                  style={{ display: 'block', marginBottom: '0.25rem' }}
-                >
-                  {JSON.stringify(part)}
-                </span>
-              )
-          }
-        })}
-      </div>
+      <div>{renderMessageParts(message)}</div>
     </div>
   )
 }

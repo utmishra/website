@@ -1,23 +1,42 @@
-import { streamText, convertToModelMessages, type UIMessage } from 'ai'
+import {
+  convertToModelMessages,
+  stepCountIs,
+  streamText,
+  type UIMessage,
+} from 'ai'
+import { buildToolSchemas } from './schema'
+import { logger } from '@components/lib/logging/logger'
 
+// Allow streaming responses up to 30 seconds like examples
 export const maxDuration = 30
+
 export async function POST(req: Request) {
-  try {
-    const { messages }: { messages: UIMessage[] } = await req.json()
-    const result = await streamText({
-      model: 'openai/gpt-4o-mini',
-      system: `You are a helpful assistant that can answer questions about the weather.`,
-      messages: convertToModelMessages(messages),
-    })
-    return result.toUIMessageStreamResponse()
-  } catch (error) {
-    console.error('Chat API error:', error)
-    return new Response(
-      JSON.stringify({ error: 'Failed to generate chat response.' }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
+  const { messages }: { messages: UIMessage[] } = await req.json()
+
+  const result = streamText({
+    model: 'openai/o3-mini',
+    system: `You are a helpful, concise file system assistant. Use read-only tools to gather exactly the information needed. After collecting needed data (at most a few tool calls), ALWAYS produce a natural language answer summarizing the findings for the user. If the data is already sufficient, answer directly without further tool calls.`,
+    messages: convertToModelMessages(messages),
+    providerOptions: {
+      openai: {
+        reasoningSummary: 'auto',
+        reasoningEffort: 'medium',
       },
-    )
-  }
+    },
+    tools: buildToolSchemas({ includeInputs: true }),
+    stopWhen: stepCountIs(5),
+    onStepFinish: ({ text, toolCalls, toolResults, finishReason }) => {
+      logger.info(
+        {
+          text,
+          toolCalls,
+          toolResults,
+          finishReason,
+        },
+        'agent.step.finish',
+      )
+    },
+  })
+
+  return result.toUIMessageStreamResponse({ sendReasoning: true })
 }

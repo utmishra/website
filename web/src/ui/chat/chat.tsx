@@ -3,9 +3,9 @@
 import { useChat } from '@ai-sdk/react'
 import { useState } from 'react'
 
-import InputBox from './input-box'
-import { Box, Button, Flex } from '@radix-ui/themes'
 import { ArrowUpIcon } from '@radix-ui/react-icons'
+import { Button, Flex } from '@radix-ui/themes'
+import InputBox from './input-box'
 import { MessageBubble } from './message-bubble'
 
 export function Chat() {
@@ -14,9 +14,7 @@ export function Chat() {
   const { id, messages, sendMessage } = useChat()
 
   const handleInputChange = (
-    event:
-      | React.SyntheticEvent<HTMLFormElement>
-      | React.KeyboardEvent<HTMLTextAreaElement>,
+    event: React.SyntheticEvent | React.KeyboardEvent,
   ) => {
     event.preventDefault()
     if (!input.trim()) return // Prevent sending empty messages
@@ -28,7 +26,7 @@ export function Chat() {
     setInput('')
   }
 
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyPress = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter') {
       if (event.shiftKey) {
         // Allow new line
@@ -54,8 +52,8 @@ export function Chat() {
           height: 'calc(100dvh - 12rem)',
         }}
       >
-        {messages.map((message, index) => (
-          <MessageBubble key={index} message={message} />
+        {messages.map((message) => (
+          <MessageBubble key={message.id} message={message} />
         ))}
       </Flex>
       <form
