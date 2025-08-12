@@ -1,17 +1,18 @@
 'use client'
 
-import { useChat } from '@ai-sdk/react'
-import { useState } from 'react'
+import { UIMessage, useChat } from '@ai-sdk/react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { ArrowUpIcon } from '@radix-ui/react-icons'
 import { Button, Flex } from '@radix-ui/themes'
 import InputBox from './input-box'
 import { MessageBubble } from './message-bubble'
+import { IntroReveal } from './intro-reveal'
 
 export function Chat() {
   const [input, setInput] = useState<string>('')
 
-  const { id, messages, sendMessage } = useChat()
+  const { id, messages, sendMessage, status, error } = useChat()
 
   const handleInputChange = (
     event: React.SyntheticEvent | React.KeyboardEvent,
@@ -37,6 +38,43 @@ export function Chat() {
     }
   }
 
+  const showIntro = messages.length <= 1 && status === 'ready'
+
+  const derivedMessages: UIMessage[] = useMemo(() => {
+    if (status === 'error' && error) {
+      return [
+        ...messages,
+        {
+          id: `${Date.now()}-error`,
+          role: 'assistant',
+          parts: [
+            {
+              type: 'text',
+              text: `⚠️ Error: ${error.message || 'Something went wrong.'}`,
+            },
+          ],
+        } as UIMessage,
+      ]
+    }
+    return messages
+  }, [messages, status, error])
+
+  const scrollRef = useRef<HTMLDivElement | null>(null)
+  const bottomRef = useRef<HTMLDivElement | null>(null)
+
+  // Smooth scroll to bottom when messages or status change (including streaming parts)
+  useEffect(() => {
+    // Use requestAnimationFrame to ensure DOM updated
+    const id = requestAnimationFrame(() => {
+      if (bottomRef.current) {
+        bottomRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
+      } else if (scrollRef.current) {
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+      }
+    })
+    return () => cancelAnimationFrame(id)
+  }, [derivedMessages, status])
+
   return (
     <Flex
       display="flex"
@@ -44,6 +82,7 @@ export function Chat() {
       style={{ minHeight: '100%', minWidth: '100%' }}
     >
       <Flex
+        ref={scrollRef}
         px="1"
         display="flex"
         direction="column"
@@ -52,9 +91,20 @@ export function Chat() {
           height: 'calc(100dvh - 12rem)',
         }}
       >
-        {messages.map((message) => (
-          <MessageBubble key={message.id} message={message} />
-        ))}
+        {showIntro && <IntroReveal />}
+        {!showIntro &&
+          derivedMessages.map((message, idx) => (
+            <MessageBubble
+              key={message.id}
+              message={message}
+              showLoading={
+                idx === derivedMessages.length - 1 && // only last bubble
+                status !== 'ready' &&
+                status !== 'error'
+              }
+            />
+          ))}
+        <div ref={bottomRef} style={{ height: 1 }} />
       </Flex>
       <form
         onSubmit={handleInputChange}

@@ -1,5 +1,6 @@
 import {
   convertToModelMessages,
+  smoothStream,
   stepCountIs,
   streamText,
   type UIMessage,
@@ -36,6 +37,10 @@ export async function POST(req: Request) {
         'agent.step.finish',
       )
     },
+    experimental_transform: smoothStream({
+      delayInMs: 20,
+      chunking: 'word',
+    }),
   })
 
   return result.toUIMessageStreamResponse({ sendReasoning: true })
