@@ -2,6 +2,6 @@
 
 > My personal website & portfolio
 
-### Components
+## Components
 - Client web server: Built in Next.js
 - Backend: Built in Nest.js

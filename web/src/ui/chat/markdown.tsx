@@ -3,76 +3,68 @@ import React, { memo } from 'react'
 import ReactMarkdown, { type Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { CodeBlock } from './code-block'
+import { ScrollArea, Table } from '@radix-ui/themes'
 
 const components: Partial<Components> = {
   // @ts-expect-error
   code: CodeBlock,
   pre: ({ children }) => <>{children}</>,
-  table: ({ node, children, ...props }) => (
-    <div className="w-full overflow-x-auto my-4">
-      <table
-        className="w-full text-sm border-collapse caption-bottom rounded-md border border-border/50 [&_code]:text-xs"
-        {...props}
+  table: ({ children, ...props }) => (
+    <ScrollArea
+      type="scroll"
+      style={{ width: '100%', maxWidth: '100%', margin: '1rem 0' }}
+    >
+      <Table.Root style={{ minWidth: '400px' }} {...props}>
+        {children}
+      </Table.Root>
+    </ScrollArea>
+  ),
+  thead: ({ children, ...props }) => (
+    <Table.Header {...props}>{children}</Table.Header>
+  ),
+  tbody: ({ children, ...props }) => (
+    <Table.Body {...props}>{children}</Table.Body>
+  ),
+  tr: ({ children, ...props }) => <Table.Row {...props}>{children}</Table.Row>,
+  th: ({ children, ...props }) => {
+    const { width, ...rest } = props as any
+    return (
+      <Table.ColumnHeaderCell
+        {...rest}
+        // Coerce numeric width to string to satisfy Radix's Responsive<string> type
+        width={width !== undefined ? String(width) : undefined}
       >
         {children}
-      </table>
-    </div>
-  ),
-  thead: ({ node, children, ...props }) => (
-    <thead
-      className="bg-muted/40 border-b border-border/60 [&_th]:text-muted-foreground"
-      {...props}
-    >
-      {children}
-    </thead>
-  ),
-  tbody: ({ node, children, ...props }) => (
-    <tbody className="divide-y divide-border/50" {...props}>
-      {children}
-    </tbody>
-  ),
-  tr: ({ node, children, ...props }) => (
-    <tr
-      className="hover:bg-muted/40 data-[state=selected]:bg-muted transition-colors"
-      {...props}
-    >
-      {children}
-    </tr>
-  ),
-  th: ({ node, children, ...props }) => (
-    <th
-      className="h-9 px-3 text-left align-middle font-medium text-[0.75rem] uppercase tracking-wide text-muted-foreground whitespace-nowrap"
-      {...props}
-    >
-      {children}
-    </th>
-  ),
-  td: ({ node, children, ...props }) => (
-    <td className="h-9 px-3 align-middle whitespace-nowrap" {...props}>
-      {children}
-    </td>
-  ),
-  ol: ({ node, children, ...props }) => {
-    return (
-      <ol className="list-decimal list-outside ml-4" {...props}>
-        {children}
-      </ol>
+      </Table.ColumnHeaderCell>
     )
   },
-  li: ({ node, children, ...props }) => {
+  td: ({ children, ...props }) => {
+    const { width, ...rest } = props as any
     return (
-      <li className="py-1" {...props}>
+      <Table.Cell
+        {...rest}
+        // Coerce numeric width to string to satisfy Radix's Responsive<string> type
+        width={width !== undefined ? String(width) : undefined}
+      >
         {children}
-      </li>
+      </Table.Cell>
     )
   },
-  ul: ({ node, children, ...props }) => {
-    return (
-      <ul className="list-decimal list-outside ml-4" {...props}>
-        {children}
-      </ul>
-    )
-  },
+  ol: ({ node, children, ...props }) => (
+    <ol className="list-decimal list-outside ml-4" {...props}>
+      {children}
+    </ol>
+  ),
+  li: ({ node, children, ...props }) => (
+    <li className="py-1 ml-4" {...props}>
+      {children}
+    </li>
+  ),
+  ul: ({ node, children, ...props }) => (
+    <ul className="list-disc list-outside ml-4" {...props}>
+      {children}
+    </ul>
+  ),
   strong: ({ node, children, ...props }) => {
     return (
       <span className="font-semibold" {...props}>

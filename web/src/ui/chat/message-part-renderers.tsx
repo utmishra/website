@@ -2,6 +2,10 @@ import React from 'react'
 import type { UIMessage } from '@ai-sdk/react'
 import { Markdown } from './markdown'
 import { logger } from '@components/lib/logging/logger'
+import {
+  braveWebSearch,
+  fetchWebPage,
+} from '@components/lib/tools/web-external'
 
 // Helper to create a stable-ish key for text parts
 function keyFromText(prefix: string, text: string, fallback: string) {
@@ -11,6 +15,22 @@ function keyFromText(prefix: string, text: string, fallback: string) {
 }
 
 // Friendly tool message generator for parts whose type matches tool-<toolName>
+const friendlyToolNames = {
+  braveWebSearch: 'Web Search',
+  fetchWebPage: 'Fetch Web Page',
+  resolveSafePath: 'Resolve Safe Path',
+  listDirectory: 'List Directory',
+  readTextFile: 'Read Text File',
+  readJsonFile: 'Read JSON File',
+  readBuffer: 'Read Buffer',
+  getFileMeta: 'Get File Metadata',
+  getFileMetaCached: 'Get Cached File Metadata',
+  pathExists: 'Check Path Exists',
+  walk: 'Walk Directory Tree',
+  getRoot: 'Get Project Root',
+  getCwd: 'Get Current Working Directory',
+} as const
+
 function renderFriendlyToolMessage(part: any) {
   if (
     !part?.type ||
@@ -18,14 +38,17 @@ function renderFriendlyToolMessage(part: any) {
     !part.type.startsWith('tool-')
   )
     return null
-  const toolName = part.type.substring('tool-'.length)
+  const toolKey = (part.type as string).substring(
+    'tool-'.length,
+  ) as keyof typeof friendlyToolNames
+  const toolName = friendlyToolNames[toolKey]
   const state: string | undefined = part.state
   const input: Record<string, any> | undefined = part.input
   const output: any = (part as any).output
 
   // Specific phrasing per known tool
   const build = () => {
-    switch (toolName) {
+    switch (toolKey) {
       case 'listDirectory': {
         const dir = input?.dir ?? '.'
         const opts = input?.options || {}
@@ -78,16 +101,16 @@ function renderFriendlyToolMessage(part: any) {
   let outputSummary = ''
   if (state === 'output-available' && output != null) {
     try {
-      if (toolName === 'listDirectory' && Array.isArray(output)) {
+      if (toolKey === 'listDirectory' && Array.isArray(output)) {
         outputSummary = ` Found ${output.length} entries.`
       } else if (
-        toolName === 'listDirectory' &&
+        toolKey === 'listDirectory' &&
         Array.isArray(output?.entries)
       ) {
         outputSummary = ` Found ${output.entries.length} entries.`
-      } else if (toolName === 'pathExists' && typeof output === 'boolean') {
+      } else if (toolKey === 'pathExists' && typeof output === 'boolean') {
         outputSummary = output ? ' Path exists.' : ' Path does not exist.'
-      } else if (toolName === 'readJsonFile') {
+      } else if (toolKey === 'readJsonFile') {
         const size = JSON.stringify(output).length
         outputSummary = ` JSON size ${size} chars.`
       }
@@ -144,9 +167,6 @@ export function renderMessagePart(
   const toolNode = renderFriendlyToolMessage(part)
   if (toolNode) return toolNode
 
-  if (part.type === 'text') {
-    logger.info('Text content', part.text)
-  }
   const renderer = staticRenderers[part.type]
   if (renderer) return renderer(part, index)
 

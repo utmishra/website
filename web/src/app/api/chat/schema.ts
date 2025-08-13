@@ -61,9 +61,7 @@ const listDirOptionsSchema: z.ZodType<ListDirOptions> = z
 // Individual tool schemas (object keyed by tool name) – zod v3 compatible
 // NOTE: These are the raw, un-instrumented definitions. Use buildToolSchemas to
 // get versions that stream progress events to the UI data stream.
-const rawToolSchemas = {
-  // --- External knowledge / web tools ---
-  // NOTE: These tools perform network calls. Ensure they are only invoked server-side.
+const generalToolSchemas = {
   braveWebSearch: {
     description:
       'Perform a Brave Web Search for a natural language query. Requires BRAVE_API_KEY env var. Returns concise result summaries.',
@@ -106,6 +104,8 @@ const rawToolSchemas = {
       .strict(),
     execute: fetchWebPage,
   },
+}
+const fileSystemToolSchemas = {
   resolveSafePath: {
     description:
       'Resolve a path against the sandbox root ensuring it does not escape (prevents traversal).',
@@ -207,6 +207,9 @@ const rawToolSchemas = {
     inputSchema: z.object({ path: pathSchema }),
     execute: ({ path }: { path: string }) => getFileMetaCached(path),
   },
+}
+const rawToolSchemas = {
+  ...generalToolSchemas,
 } as const
 
 interface BuildOptions {

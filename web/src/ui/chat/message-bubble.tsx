@@ -1,7 +1,12 @@
 import type { UIMessage } from '@ai-sdk/react'
 import { renderMessagePart } from './message-part-renderers'
-import { memo } from 'react'
+import { memo, useState, useEffect } from 'react'
 import { motion } from 'motion/react'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@radix-ui/react-collapsible'
 
 export const LoadingDots = memo(function LoadingDots() {
   const dots = [0, 1, 2]
@@ -52,49 +57,90 @@ const signature = (m: UIMessage) =>
     .join('|')
 
 const MessageBubbleInner = ({ message, showLoading }: MessageBubbleProps) => {
+  // Determine if streaming (expanded) or ready (collapsed)
+  const [open, setOpen] = useState(showLoading)
+  useEffect(() => {
+    // Only update open if value actually changes
+    if (!showLoading && open) setOpen(false)
+    else if (showLoading && !open) setOpen(true)
+  }, [showLoading])
+
+  // Split message parts into text and meta
+  const textParts = message.parts.filter((part: any) => part.type === 'text')
+  const metaParts = message.parts.filter(
+    (part: any) =>
+      part.type !== 'text' &&
+      (part.type === 'reasoning' ||
+        part.type === 'dynamic-tool' ||
+        part.type.startsWith?.('tool-') ||
+        part.type === 'step-start'),
+  )
+
   return (
     <>
-      {message.parts.map((part, index) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- external lib message part
-        const content = renderMessagePart(part as any, index)
-        if (!content) return null
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- external lib message part
-        const type = (part as any).type as string | undefined
-        const isMeta =
-          (!!type &&
-            (type === 'reasoning' ||
-              type === 'dynamic-tool' ||
-              type.startsWith?.('tool-'))) ||
-          type === 'step-start'
-
-        if (isMeta) {
-          const isReasoning = type === 'reasoning'
-          const isToolLine = !!type && type.startsWith?.('tool-')
-          // Inline dots removed; they now appear in their own line below all parts.
-          const showDotsHere = false
-          return (
+      {/* Render all meta parts in a single collapsible before text bubbles */}
+      {metaParts.length > 0 && (
+        <Collapsible
+          key={`${message.id}-meta`}
+          open={open}
+          onOpenChange={setOpen}
+        >
+          <CollapsibleTrigger asChild>
             <motion.div
-              key={`${message.id}-meta-${index}`}
               initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, ease: 'easeOut' }}
               style={{
-                margin: '0.25rem 0.75rem',
-                fontSize: '0.7rem',
                 fontStyle: 'italic',
-                lineHeight: 1.2,
-                color: 'var(--gray-11)',
-                maxWidth: '70ch',
+                margin: '0.15rem 0.5rem',
+                maxWidth: '25ch',
                 display: 'flex',
                 alignItems: 'flex-start',
                 gap: 6,
+                cursor: 'pointer',
               }}
             >
-              <span style={{ flex: 1 }}>{content}</span>
+              <span style={{ flex: 1 }}>Reasoning details</span>
+              <span style={{ marginLeft: 8, fontSize: '1.1em' }}>
+                {open ? '▼' : '▶'}
+              </span>
             </motion.div>
-          )
-        }
-
+          </CollapsibleTrigger>
+          <CollapsibleContent
+            forceMount
+            style={{
+              margin: 0,
+              fontSize: '0.65rem',
+              color: 'var(--gray-12)',
+              overflow: 'hidden',
+              transition: 'height 0.4s cubic-bezier(0.87, 0, 0.13, 1)',
+              willChange: 'height',
+              minHeight: open ? undefined : 0,
+              maxWidth: '150ch',
+              height: open ? 'auto' : 0,
+              padding: open ? '0.25rem 0.5rem' : 0,
+              marginBottom: open ? '0.25rem' : 0,
+              display: open ? 'block' : 'none',
+            }}
+            className="collapsibleContent"
+          >
+            {open && (
+              <div>
+                {metaParts.map((part, index) => {
+                  const content = renderMessagePart(part as any, index)
+                  return (
+                    <div key={`${message.id}-meta-${index}`}>{content}</div>
+                  )
+                })}
+              </div>
+            )}
+          </CollapsibleContent>
+        </Collapsible>
+      )}
+      {/* Render all text parts normally */}
+      {textParts.map((part, index) => {
+        const content = renderMessagePart(part as any, index)
+        if (!content) return null
         return (
           <motion.div
             key={`${message.id}-part-${index}`}
@@ -112,11 +158,18 @@ const MessageBubbleInner = ({ message, showLoading }: MessageBubbleProps) => {
               alignItems: 'flex-start',
               gap: 8,
               width: 'fit-content',
-              maxWidth: '80%',
+              maxWidth: '90dvw',
               alignSelf: message.role === 'user' ? 'flex-end' : 'flex-start',
             }}
           >
-            <div style={{ flex: 1 }}>{content}</div>
+            <div
+              style={{
+                maxWidth: '90dvw',
+                padding: '0.5rem 2rem',
+              }}
+            >
+              {content}
+            </div>
           </motion.div>
         )
       })}

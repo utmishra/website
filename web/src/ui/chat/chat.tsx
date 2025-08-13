@@ -70,19 +70,32 @@ function ChatInner() {
 
   const scrollRef = useRef<HTMLDivElement | null>(null)
   const bottomRef = useRef<HTMLDivElement | null>(null)
+  const [showScrollIcon, setShowScrollIcon] = useState(false)
 
-  // Smooth scroll to bottom when messages or status change (including streaming parts)
+  // Show scroll-to-bottom icon if not at bottom
   useEffect(() => {
-    // Use requestAnimationFrame to ensure DOM updated
-    const id = requestAnimationFrame(() => {
-      if (bottomRef.current) {
-        bottomRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
-      } else if (scrollRef.current) {
-        scrollRef.current.scrollTop = scrollRef.current.scrollHeight
-      }
-    })
-    return () => cancelAnimationFrame(id)
-  }, [derivedMessages, status])
+    const handleScroll = () => {
+      if (!scrollRef.current) return
+      const { scrollTop, scrollHeight, clientHeight } = scrollRef.current
+      setShowScrollIcon(scrollTop + clientHeight < scrollHeight - 40)
+    }
+    const ref = scrollRef.current
+    if (ref) {
+      ref.addEventListener('scroll', handleScroll)
+      handleScroll()
+    }
+    return () => {
+      if (ref) ref.removeEventListener('scroll', handleScroll)
+    }
+  }, [derivedMessages])
+
+  const scrollToBottom = () => {
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
+    } else if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+    }
+  }
 
   return (
     <Flex
@@ -141,39 +154,73 @@ function ChatInner() {
           )}
         <div ref={bottomRef} style={{ height: 1 }} />
       </Flex>
-      <form
-        onSubmit={handleInputChange}
-        style={{
-          position: 'fixed',
-          left: 0,
-          right: 0,
-          bottom: 0,
-          padding: '1rem',
-          paddingBottom: 'max(1rem, env(safe-area-inset-bottom))',
-        }}
+      <div
+        style={{ position: 'fixed', left: 0, right: 0, bottom: 0, zIndex: 10 }}
       >
-        <InputBox
-          input={input}
-          onChange={setInput}
-          onKeyPress={handleKeyPress}
-        />
-        <Button
-          size="4"
-          type="submit"
-          disabled={status !== 'ready' && status !== 'error'}
+        {/* Floating scroll-to-bottom icon centered above input */}
+        {showScrollIcon && (
+          <div
+            style={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              position: 'absolute',
+              bottom: '7.5rem',
+              zIndex: 20,
+            }}
+          >
+            <Button
+              size="3"
+              variant="soft"
+              style={{
+                borderRadius: '50%',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                background: 'var(--blue-1)',
+                color: 'white',
+                transition: 'opacity 0.3s',
+                opacity: showScrollIcon ? 1 : 0,
+              }}
+              onClick={scrollToBottom}
+              aria-label="Scroll to bottom"
+            >
+              <ArrowUpIcon style={{ transform: 'rotate(180deg)' }} />
+            </Button>
+          </div>
+        )}
+        <form
+          onSubmit={handleInputChange}
           style={{
-            position: 'absolute',
-            right: '2rem',
-            bottom: '3rem',
-            opacity: status !== 'ready' && status !== 'error' ? 0.5 : 1,
-            pointerEvents:
-              status !== 'ready' && status !== 'error' ? 'none' : 'auto',
-            transition: 'opacity 0.2s ease',
+            position: 'relative',
+            left: 0,
+            right: 0,
+            bottom: 0,
+            padding: '1rem',
+            paddingBottom: 'max(1rem, env(safe-area-inset-bottom))',
           }}
         >
-          <ArrowUpIcon />
-        </Button>
-      </form>
+          <InputBox
+            input={input}
+            onChange={setInput}
+            onKeyPress={handleKeyPress}
+          />
+          <Button
+            size="4"
+            type="submit"
+            disabled={status !== 'ready' && status !== 'error'}
+            style={{
+              position: 'absolute',
+              right: '2rem',
+              bottom: '3rem',
+              opacity: status !== 'ready' && status !== 'error' ? 0.5 : 1,
+              pointerEvents:
+                status !== 'ready' && status !== 'error' ? 'none' : 'auto',
+              transition: 'opacity 0.2s ease',
+            }}
+          >
+            <ArrowUpIcon />
+          </Button>
+        </form>
+      </div>
     </Flex>
   )
 }
