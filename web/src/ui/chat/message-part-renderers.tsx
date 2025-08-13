@@ -4,6 +4,7 @@ import { Markdown } from './markdown'
 import { logger } from '@components/lib/logging/logger'
 import {
   braveWebSearch,
+  exaWebSearch,
   fetchWebPage,
 } from '@components/lib/tools/web-external'
 
@@ -16,6 +17,7 @@ function keyFromText(prefix: string, text: string, fallback: string) {
 
 // Friendly tool message generator for parts whose type matches tool-<toolName>
 const friendlyToolNames = {
+  exaWebSearch: 'Web Search',
   braveWebSearch: 'Web Search',
   fetchWebPage: 'Fetch Web Page',
   resolveSafePath: 'Resolve Safe Path',

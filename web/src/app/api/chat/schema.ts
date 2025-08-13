@@ -20,7 +20,11 @@ import {
 } from '../../../lib/tools/file-system'
 import { logger } from '@components/lib/logging/logger'
 import { getCtx } from '@components/lib/logging/context'
-import { braveWebSearch, fetchWebPage } from '../../../lib/tools/web-external'
+import {
+  braveWebSearch,
+  exaWebSearch,
+  fetchWebPage,
+} from '../../../lib/tools/web-external'
 
 // Reusable schemas
 const pathSchema = z
@@ -103,6 +107,15 @@ const generalToolSchemas = {
       })
       .strict(),
     execute: fetchWebPage,
+  },
+  exaWebSearch: {
+    description: 'Web Search & Search Result Content extraction',
+    inputSchema: z
+      .object({
+        query: z.string().min(2).max(300).describe('Search query string.'),
+      })
+      .strict(),
+    execute: exaWebSearch,
   },
 }
 const fileSystemToolSchemas = {
@@ -209,7 +222,7 @@ const fileSystemToolSchemas = {
   },
 }
 const rawToolSchemas = {
-  ...generalToolSchemas,
+  exaWebSearch: generalToolSchemas.exaWebSearch,
 } as const
 
 interface BuildOptions {

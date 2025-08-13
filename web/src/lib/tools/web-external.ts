@@ -1,6 +1,11 @@
 // External web / search tools for the chatbot
 // Server-only utility functions used by tool schemas.
 
+import { ContentsOptions, Exa } from 'exa-js'
+import { logger } from '../logging/logger'
+
+const exa = new Exa(process.env.EXA_API_KEY)
+
 /**
  * Perform a Brave Web Search for a natural language query.
  * Requires BRAVE_API_KEY environment variable.
@@ -140,4 +145,29 @@ export async function fetchWebPage({
   } finally {
     clearTimeout(timeout)
   }
+}
+
+export async function exaWebSearch({ query }: { query: string }) {
+  logger.info(`Searching for ${query}`)
+  const response = await exa.searchAndContents<ContentsOptions>(query, {
+    numResults: 5,
+    type: 'keyword',
+    text: {
+      maxCharacters: 5000,
+    },
+  })
+
+  logger.info(
+    response.results.reduce((acc, result) => acc + result.text.length, 0),
+    'Total text length from Exa search results',
+  )
+
+  return response.results.map((result) => {
+    return {
+      id: result.id,
+      title: result.title,
+      url: result.url,
+      content: result.text,
+    }
+  })
 }
