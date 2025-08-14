@@ -11,6 +11,7 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
     env: {
+      TEST_ROUTES: '1',
       EXA_API_KEY: 'exa_dummy_key_1234567890abcdef',
       BRAVE_API_KEY: 'brave_dummy_key_abcdef1234567890',
     },

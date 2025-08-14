@@ -20,8 +20,9 @@ export async function setupSession(
     await target.context().addCookies([cookie])
   } else {
     // APIRequestContext – send the session via cookie header.
-    const headers = await target.extraHTTPHeaders()
-    await target.setExtraHTTPHeaders({
+    const req: any = target as any
+    const headers = (await req.extraHTTPHeaders?.()) ?? {}
+    await req.setExtraHTTPHeaders?.({
       ...headers,
       Cookie: `session=${sessionId}`,
     })
@@ -37,15 +38,33 @@ export async function selectModel(
   model: string,
 ) {
   if ('evaluate' in target) {
-    await target.evaluate(
-      (m) => {
-        window.localStorage.setItem('model', m)
-      },
-      model,
-    )
+    // Page instance – when called before navigation, directly touching
+    // localStorage on about:blank throws a SecurityError. To be robust,
+    // inject an init script that will set localStorage on the next
+    // navigation, and also attempt to set it immediately if we're
+    // already on a real document.
+    const page = target as Page
+    await page.addInitScript((m) => {
+      try {
+        window.localStorage.setItem('model', m as string)
+      } catch {
+        // Ignore if storage isn't available yet; init script will run on navigation.
+      }
+    }, model)
+
+    // Best effort immediate set if the page has already navigated.
+    try {
+      if (page.url() && !page.url().startsWith('about:')) {
+        await page.evaluate((m) => {
+          window.localStorage.setItem('model', m)
+        }, model)
+      }
+    } catch {
+      // Swallow any storage access issues pre-navigation.
+    }
   } else {
-    const headers = await target.extraHTTPHeaders()
-    await target.setExtraHTTPHeaders({ ...headers, 'x-model': model })
+    const req: any = target as any
+    const headers = (await req.extraHTTPHeaders?.()) ?? {}
+    await req.setExtraHTTPHeaders?.({ ...headers, 'x-model': model })
   }
 }
-
