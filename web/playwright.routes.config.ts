@@ -1,4 +1,4 @@
-import { defineConfig } from '@playwright/test';
+import { defineConfig } from '@playwright/test'
 
 export default defineConfig({
   testDir: './tests/routes',
@@ -11,10 +11,8 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
     env: {
-      EXA_API_KEY: 'test',
       EXA_API_KEY: 'exa_dummy_key_1234567890abcdef',
       BRAVE_API_KEY: 'brave_dummy_key_abcdef1234567890',
     },
   },
-});
-
+})
