@@ -29,7 +29,7 @@ test.describe('/api/chat', () => {
       : first.content;
 
     expect(content).toBe(genericSystemPrompt);
-    expect(content).not.toContain(systemPrompt.slice(0, 30));
+    expect(content).not.toContain(systemPrompt.slice(0, SYSTEM_PROMPT_SLICE_LENGTH));
   });
 
   test('errors when messages are missing', async ({ request }) => {
