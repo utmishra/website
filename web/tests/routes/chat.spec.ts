@@ -23,7 +23,9 @@ test.describe('/api/chat', () => {
 
     const first = JSON.parse(dataLines[0]);
     const content = Array.isArray(first.content)
-      ? first.content.map((p: any) => p.text ?? '').join('')
+    type ContentPart = { text?: string };
+    const content = Array.isArray(first.content)
+      ? first.content.map((p: ContentPart) => p.text ?? '').join('')
       : first.content;
 
     expect(content).toBe(genericSystemPrompt);
