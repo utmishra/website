@@ -12,7 +12,8 @@ export default defineConfig({
     timeout: 120000,
     env: {
       EXA_API_KEY: 'test',
-      BRAVE_API_KEY: 'test',
+      EXA_API_KEY: 'exa_dummy_key_1234567890abcdef',
+      BRAVE_API_KEY: 'brave_dummy_key_abcdef1234567890',
     },
   },
 });
