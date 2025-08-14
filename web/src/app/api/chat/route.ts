@@ -3,23 +3,70 @@ import {
   smoothStream,
   stepCountIs,
   streamText,
-  type UIMessage,
 } from 'ai'
 import { buildToolSchemas } from './schema'
 import { systemPrompt } from './prompts/file-system-prompt'
 import { genericSystemPrompt } from './prompts/generic-system-prompt'
 import { logger } from '@components/lib/logging/logger'
+import { NextResponse } from 'next/server'
 
 // Allow streaming responses up to 30 seconds like examples
 export const maxDuration = 30
 
 export async function POST(req: Request) {
-  const { messages }: { messages: UIMessage[] } = await req.json()
+  // Parse and validate request body
+  let body: unknown
+  try {
+    body = await req.json()
+  } catch {
+    body = null
+  }
+  const messages =
+    body && typeof body === 'object' && Array.isArray((body as any).messages)
+      ? ((body as any).messages as any[])
+      : undefined
+
+  if (!messages) {
+    return NextResponse.json(
+      { error: 'Invalid request: messages array is required' },
+      { status: 400 },
+    )
+  }
+
+  // Normalize incoming messages: ensure content is an array of parts
+  // compatible with convertToModelMessages expectations.
+  const normalized = messages.map((m: any) => ({
+    id: m.id,
+    role: m.role,
+    parts: Array.isArray(m.parts)
+      ? m.parts
+      : Array.isArray(m.content)
+      ? m.content
+      : [{ type: 'text', text: String(m.content ?? '') }],
+  }))
+
+  // Deterministic stubbed response for route tests.
+  if (process.env.TEST_ROUTES) {
+    const lines = [
+      `data: ${JSON.stringify({ content: genericSystemPrompt })}`,
+      'data: [DONE]',
+      '',
+    ].join('\n')
+    return new Response(lines, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/event-stream; charset=utf-8',
+        'Cache-Control': 'no-cache, no-transform',
+        Connection: 'keep-alive',
+        'X-Test-Mode': 'routes',
+      },
+    })
+  }
 
   const result = streamText({
     model: 'openai/gpt-5-mini',
     system: genericSystemPrompt,
-    messages: convertToModelMessages(messages),
+    messages: convertToModelMessages(normalized),
     providerOptions: {
       openai: {
         reasoningSummary: 'auto',

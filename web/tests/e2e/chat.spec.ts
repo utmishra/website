@@ -1,8 +1,13 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
+import { setupSession, selectModel } from '../helpers';
 import { ChatPage } from '../pages/ChatPage';
 
 test.describe('chat flow', () => {
-  test('navigates from home to chat', async ({ page }) => {
+  test('navigates from home to chat', async ({ namedPage }) => {
+    const page = await namedPage('user');
+    await setupSession(page);
+    await selectModel(page, 'openai/gpt-5-mini');
+
     const chatPage = new ChatPage(page);
     await page.goto('/');
     await page.getByRole('link', { name: 'Chat with me' }).click();
@@ -10,7 +15,11 @@ test.describe('chat flow', () => {
     await expect(chatPage.chatInput()).toBeVisible({ timeout: 15000 });
   });
 
-  test('renders user message', async ({ page }) => {
+  test('renders user message', async ({ namedPage }) => {
+    const page = await namedPage('user');
+    await setupSession(page);
+    await selectModel(page, 'openai/gpt-5-mini');
+
     const chatPage = new ChatPage(page);
     await chatPage.goto();
     await chatPage.sendMessage('Hello, world!');
