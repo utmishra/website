@@ -5,10 +5,11 @@ import {
   streamText,
 } from 'ai'
 import { buildToolSchemas } from './schema'
-import { systemPrompt } from './prompts/file-system-prompt'
 import { genericSystemPrompt } from './prompts/generic-system-prompt'
 import { logger } from '@components/lib/logging/logger'
 import { NextResponse } from 'next/server'
+import { simpleStream } from '../../../../tests/prompts/simple'
+import { buildStream } from '../../../../tests/prompts/utils'
 
 // Allow streaming responses up to 30 seconds like examples
 export const maxDuration = 30
@@ -47,11 +48,7 @@ export async function POST(req: Request) {
 
   // Deterministic stubbed response for route tests.
   if (process.env.TEST_ROUTES) {
-    const lines = [
-      `data: ${JSON.stringify({ content: genericSystemPrompt })}`,
-      'data: [DONE]',
-      '',
-    ].join('\n')
+    const lines = buildStream(simpleStream)
     return new Response(lines, {
       status: 200,
       headers: {
