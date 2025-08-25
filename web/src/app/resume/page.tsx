@@ -11,40 +11,59 @@ import { skills } from '@components/data/skills'
 import Skill from '@components/ui/resume/skill'
 import AboutMe from '@components/data/about-me'
 import { responsiveWidth } from '@components/ui/common/styles'
-import { UIEventHandler, useEffect, useState } from 'react'
+import { UIEventHandler, useEffect, useState, useRef, useCallback } from 'react'
 import { BlockId } from '@components/ui/resume/types'
 import Qualifications from '@components/ui/homepage/qualifications'
 
 export default function Resume() {
   const [activeSection, setActiveSection] = useState(BlockId.ABOUT_ME)
-  const sectionHeights: number[] = []
-  let sections: Element[]
+  const sectionsRef = useRef<Element[]>([])
+  const sectionHeightsRef = useRef<number[]>([])
 
   useEffect(() => {
     const section = document.querySelector('#sections')
     if (section) {
-      // Each section's height: 300, 300, 1300, 300
-      let previousHeight = 0
-      sections = [...section.children]
-
-      for (const element of sections) {
+      sectionsRef.current = [...section.children]
+      sectionHeightsRef.current = []
+      
+      let cumulativeHeight = 0
+      for (const element of sectionsRef.current) {
         const currentHeight = element.clientHeight
-        sectionHeights.push(previousHeight + currentHeight)
-        previousHeight += currentHeight
+        cumulativeHeight += currentHeight
+        sectionHeightsRef.current.push(cumulativeHeight)
       }
     }
-  }, [sectionHeights])
+  }, [])
 
-  const updateActiveSection: UIEventHandler<HTMLDivElement> = (event) => {
-    console.log('Scrolling')
-    const scrolledHeight = event.currentTarget.scrollTop
-    for (let i = 0; i < sectionHeights.length - 1; i++) {
-      const currentHeight = sectionHeights[i]
-      if (scrolledHeight >= currentHeight * 0.7) {
-        setActiveSection(sections[i + 1].id as BlockId)
+  const updateActiveSection: UIEventHandler<HTMLDivElement> = useCallback((event) => {
+    const scrolledHeight = event.currentTarget.scrollTop + 100 // Add offset for better UX
+    const sections = sectionsRef.current
+    const heights = sectionHeightsRef.current
+    
+    if (sections.length === 0 || heights.length === 0) return
+
+    for (let i = 0; i < heights.length; i++) {
+      // Check if we're in the current section's range
+      const prevHeight = i === 0 ? 0 : heights[i - 1]
+      const currentHeight = heights[i]
+      
+      if (scrolledHeight >= prevHeight && scrolledHeight < currentHeight) {
+        const sectionId = sections[i].id as BlockId
+        if (sectionId !== activeSection) {
+          setActiveSection(sectionId)
+        }
+        break
       }
     }
-  }
+    
+    // Handle last section
+    if (scrolledHeight >= heights[heights.length - 1] - 200) {
+      const lastSectionId = sections[sections.length - 1].id as BlockId
+      if (lastSectionId !== activeSection) {
+        setActiveSection(lastSectionId)
+      }
+    }
+  }, [activeSection])
 
   return (
     <Grid
