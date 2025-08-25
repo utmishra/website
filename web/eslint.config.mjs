@@ -11,10 +11,10 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends('next/core-web-vitals', 'next/typescript', 'prettier'),
-  ...compat.plugins('react-compiler'),
+  // Removed react-compiler plugin as it's not installed
   ...compat.config({
     rules: {
-      'react-compiler/react-compiler': 'error',
+      // 'react-compiler/react-compiler': 'error',
     },
   }),
 ]

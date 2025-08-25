@@ -3,13 +3,10 @@ import '@radix-ui/themes/styles.css'
 import './globals.css'
 import { Theme } from '@radix-ui/themes'
 import { ThemeProvider } from 'next-themes'
-import { Noto_Sans_Mono } from 'next/font/google'
 import { Header } from '@components/ui/homepage/header'
 
-const notoSansMono = Noto_Sans_Mono({
-  subsets: ['latin'],
-  display: 'swap',
-})
+// Fallback to system fonts to avoid network dependency issues
+const systemFontClass = 'font-mono'
 
 export const metadata: Metadata = {
   title: 'Utkarsh Mishra - Senior Full Stack Engineer',
@@ -22,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={notoSansMono.className} suppressHydrationWarning>
+    <html lang="en" className={systemFontClass} suppressHydrationWarning>
       <body>
         <ThemeProvider attribute="class" enableSystem>
           <Theme
