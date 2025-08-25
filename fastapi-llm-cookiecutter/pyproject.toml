@@ -1,0 +1,63 @@
+[project]
+name = "fastapi-llm-cookiecutter"
+version = "0.1.0"
+description = "FastAPI backend scaffold for Azure LLM with RAG and SSE"
+requires-python = ">=3.11"
+authors = [{name = "Utkarsh"}]
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic>=2",
+    "pydantic-settings",
+    "openai>=1",
+    "azure-search-documents",
+    "azure-ai-contentsafety",
+    "azure-storage-blob",
+    "azure-identity",
+    "celery",
+    "redis",
+    "fastapi-limiter",
+    "opentelemetry-sdk",
+    "opentelemetry-instrumentation-fastapi",
+    "prometheus-client",
+    "sentry-sdk",
+    "structlog",
+    "sqlalchemy>=2",
+    "alembic",
+    "psycopg[binary]",
+    "langchain-text-splitters",
+    "pyjwt",
+    "httpx",
+    "python-multipart",
+    "unstructured",
+    "pypdf",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "black",
+    "mypy",
+    "pre-commit",
+    "pytest",
+    "pytest-asyncio",
+    "respx",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+select = ["E", "F", "I", "B"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true

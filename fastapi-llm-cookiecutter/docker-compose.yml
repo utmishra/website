@@ -1,0 +1,43 @@
+version: "3.9"
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api
+    env_file: .env.example
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+      - postgres
+      - azurite
+  worker:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.worker
+    env_file: .env.example
+    depends_on:
+      - redis
+      - postgres
+      - azurite
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: app
+    ports:
+      - "5432:5432"
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    command: azurite-blob --blobHost 0.0.0.0
+    ports:
+      - "10000:10000"
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
